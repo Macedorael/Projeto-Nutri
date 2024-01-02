@@ -1,0 +1,17 @@
+body{
+    background-color: #c3abd1 ;
+}
+    
+.btn{
+    margin-top: 10px;
+    background-color: #6c128d;
+    color: white;
+}
+    
+.btn:hover{
+    background-color: #2b0f34 !important;
+}
+
+.table{
+    background-color: #2b0f34;
+}

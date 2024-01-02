@@ -1,0 +1,32 @@
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Paciente</h1>
+        <p>Nome: {{ paciente.nome }}</p>
+        <p>Telefone: {{ paciente.telefone }}</p>
+        <p>Email: {{ paciente.email }}</p>
+        <p>Início: {{ paciente.criado }}</p>
+        <p>Data de Nascimento: {{ paciente.nascimento }}</p>
+        <p>Idade: {{idade}} anos</p>
+        <br><br>
+        <h2>Medidas</h2>
+        
+        <p>{{classificacao}}</p>
+
+        <div class="d-flex">
+            <a href="{% url 'plano' paciente.id %}" class="btn btn-primary">Fazer Plano</a>
+            <a href="{% url 'antropometria' paciente.id %}" class="btn btn-primary">Antropometria</a>
+        </div>
+    </div> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
