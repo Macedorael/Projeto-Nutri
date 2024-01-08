@@ -14,36 +14,35 @@
         <h2>Medidas</h2>
         <div class="container">
             <table class="table table-dark">
-                <thead>
+                <thead class="flex-column">
                     <tr>
-                        <th scope="col">Nome</th>
+                        
                         <th scope="col">Pescoço</th>
                         <th scope="col">Ombro</th>
                         <th scope="col">Torax</th>
-                        <th scope="col">Bracodireito</th>
-                        <th scope="col">Bracoesquerdo</th>
-                        <th scope="col">Bracodireitocontraido</th>
-                        <th scope="col">Bracoesquerdocontraido</th>
-                        <th scope="col">Antebracodireito</th>
-                        <th scope="col">Antebracoesquerdo</th>
+                        <th scope="col">Braco Direito</th>
+                        <th scope="col">Braco Esquerdo</th>
+                        <th scope="col">Braco Direito Contraido</th>
+                        <th scope="col">Braco Esquerdo Contraido</th>
+                        <th scope="col">Antebraco Direito</th>
+                        <th scope="col">Antebraco Esquerdo</th>
                         <th scope="col">Cintura</th>
                         <th scope="col">Abdome</th>
                         <th scope="col">Quadril</th>
-                        <th scope="col">Coxadistaldireita</th>
-                        <th scope="col">Coxadistalesquerda</th>
-                        <th scope="col">Coxamedialdireita</th>
-                        <th scope="col">Coxamedialesquerda</th>
-                        <th scope="col">Coxaprossimaldireita</th>
-                        <th scope="col">Coxaprossimalesquerda</th>
-                        <th scope="col">Ponturrilhadireita</th>
-                        <th scope="col">Ponturrilhaesquerda</th>
-                        <th scope="col">Classificacao</th>
+                        <th scope="col">Coxa Distal Direita</th>
+                        <th scope="col">Coxa Distal Esquerda</th>
+                        <th scope="col">Coxa Medial Direita</th>
+                        <th scope="col">Coxa Medial Esquerda</th>
+                        <th scope="col">Coxa Prossimal Direita</th>
+                        <th scope="col">Coxa Prossimal Esquerda</th>
+                        <th scope="col">Panturrilha Direita</th>
+                        <th scope="col">Panturrilha Esquerda</th>
+                        <th scope="col">Classificação</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in circuferencias %}
                         <tr>
-                            <td scope="row">{{ p.nome }}</td>
                             <td scope="row">{{ p.pescoco  }}</td>
                             <td scope="row">{{ p.ombro }}</a></td>
                             <td scope="row">{{ p.torax  }}</td>
@@ -76,7 +75,7 @@
         </div>
     </div>
 
-    {% include 'fazermedida.html' %}
+    {% include 'fazercircuferencia.html' %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

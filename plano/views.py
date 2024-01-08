@@ -178,3 +178,23 @@ def fazermedida(request,pk):
     }
     return render(request, 'fazermedida.html',context)
 
+def fazercircuferencia(request,pk):
+    paciente = Paciente.objects.get(id=pk)
+
+    if request.method == 'POST':
+        nome = paciente
+        pescoco = float(request.POST.get('pescoco'))
+        ombro = float(request.POST.get('ombro'))
+        
+        
+        
+        circuferencias = Circuferencias(nome=nome,pescoco=pescoco, ombro= ombro, imc=imc, )
+        circuferencias.save()
+
+        
+        return redirect('imc', pk=pk)
+    context={
+        'paciente': paciente
+
+    }
+    return render(request, 'fazercircuferencias.html',context)

@@ -15,3 +15,31 @@ body{
 .table{
     background-color: #2b0f34;
 }
+
+.table-responsive-vertical {
+    overflow: auto;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+}
+
+/* Estilo para as células do cabeçalho vertical */
+.table-responsive-vertical th, .table-responsive-vertical td {
+    text-align: center;
+}
+
+/* Estilo para a classe tbody */
+.table-responsive-vertical .tbody {
+    display: block;
+    width: calc(100% - 17px);
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+/* Adicione um estilo de rolagem horizontal à classe tbody */
+.table-responsive-vertical .tbody tr {
+    display: flex;
+    white-space: nowrap;
+}

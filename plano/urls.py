@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, logout, cadastro, painel,paciente,plano,imc,fazermedida,antropometria,circuferencias
+from .views import login, logout, cadastro, painel,paciente,plano,imc,fazermedida,antropometria,circuferencias,fazercircuferencia
 
 urlpatterns = [
     path('', login , name='login'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('imc/<int:pk>', imc, name='imc'),
     path('circuferencias/<int:pk>', circuferencias, name='circuferencias'),
     path('fazermedida/<int:pk>', fazermedida, name='fazermedida'),
+    path('fazercircuferencia/<int:pk>', fazercircuferencia, name='fazercircuferencia')
     
 
 ]
