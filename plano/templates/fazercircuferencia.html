@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{% url 'fazermedida' paciente.id %}">
+                <form method="post" action="{% url 'fazercircuferencia' paciente.id %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <p>Paciente: {{ paciente.nome }}</p>
@@ -61,6 +61,46 @@
                     <div class="form-group">
                         <label for="cintura">Cintura</label>
                         <input type="number" step="0.01" class="form-control" id="cintura" name="cintura" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abdome">Abdome</label>
+                        <input type="number" step="0.01" class="form-control" id="abdome" name="abdome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quadril">Quadril</label>
+                        <input type="number" step="0.01" class="form-control" id="quadril" name="quadril" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxadistaldireita">Coxa Distal Direita</label>
+                        <input type="number" step="0.01" class="form-control" id="coxadistaldireita" name="coxadistaldireita" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxadistalesquerda">Coxa Distal Esquerda</label>
+                        <input type="number" step="0.01" class="form-control" id="coxadistalesquerda" name="coxadistalesquerda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxamedialdireita">Coxa Medial Direita</label>
+                        <input type="number" step="0.01" class="form-control" id="coxamedialdireita" name="coxamedialdireita" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxamedialesquerda">Coxa Medial Esquerda</label>
+                        <input type="number" step="0.01" class="form-control" id="coxamedialesquerda" name="coxamedialesquerda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxaproximaldireita">Coxa Proximal Direita</label>
+                        <input type="number" step="0.01" class="form-control" id="coxaproximaldireita" name="coxaproximaldireita" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coxaproximalesquerda">Coxa Proximal Esquerda</label>
+                        <input type="number" step="0.01" class="form-control" id="coxaproximalesquerda" name="coxaproximalesquerda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="panturrilhadireita">Panturrilha Direita</label>
+                        <input type="number" step="0.01" class="form-control" id="panturrilhadireita" name="panturrilhadireita" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="panturrilhaesquerda">Panturrilha Esquerda</label>
+                        <input type="number" step="0.01" class="form-control" id="panturrilhaesquerda" name="panturrilhaesquerda" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>

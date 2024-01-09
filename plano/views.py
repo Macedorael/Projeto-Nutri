@@ -185,14 +185,37 @@ def fazercircuferencia(request,pk):
         nome = paciente
         pescoco = float(request.POST.get('pescoco'))
         ombro = float(request.POST.get('ombro'))
-        
-        
-        
-        circuferencias = Circuferencias(nome=nome,pescoco=pescoco, ombro= ombro, imc=imc, )
+        torax = float(request.POST.get('torax'))
+        bracodireito = float(request.POST.get('bracodireito'))
+        bracoesquerdo = float(request.POST.get('bracoesquerdo'))
+        bracodireitocontraido = float(request.POST.get('bracodireitocontraido'))
+        bracoesquerdocontraido = float(request.POST.get('bracoesquerdocontraido'))
+        antebracodireito = float(request.POST.get('antebracodireito'))
+        antebracoesquerdo = float(request.POST.get('antebracoesquerdo'))
+        cintura = float(request.POST.get('cintura'))
+        abdome = float(request.POST.get('abdome'))
+        quadril = float(request.POST.get('quadril'))
+        coxadistaldireita = float(request.POST.get('coxadistaldireita'))
+        coxadistalesquerda = float(request.POST.get('coxadistalesquerda'))
+        coxamedialdireita = float(request.POST.get('coxamedialdireita'))
+        coxamedialesquerda = float(request.POST.get('coxamedialesquerda'))
+        coxaproximaldireita = float(request.POST.get('coxaproximaldireita'))
+        coxaproximalesquerda = float(request.POST.get('coxaproximalesquerda'))
+        panturrilhadireita = float(request.POST.get('panturrilhadireita'))
+        panturrilhaesquerda = float(request.POST.get('panturrilhaesquerda'))
+        classificacao = 1
+
+        circuferencias = Circuferencias(nome=nome,pescoco=pescoco, ombro= ombro,torax=torax, bracodireito=bracodireito, bracoesquerdo=bracoesquerdo,  bracodireitocontraido= bracodireitocontraido,
+       bracoesquerdocontraido=bracoesquerdocontraido, antebracodireito= antebracodireito, antebracoesquerdo=antebracoesquerdo, 
+       cintura=cintura, abdome=abdome, quadril=quadril, coxadistaldireita=coxadistaldireita, coxadistalesquerda=coxadistalesquerda, 
+       coxamedialdireita=coxamedialdireita, coxamedialesquerda=coxamedialesquerda, coxaproximaldireita=coxaproximaldireita,
+       coxaproximalesquerda=coxaproximalesquerda, panturrilhadireita=panturrilhadireita, panturrilhaesquerda=panturrilhaesquerda,
+       classificacao=classificacao
+         )
         circuferencias.save()
 
         
-        return redirect('imc', pk=pk)
+        return redirect('circuferencias',pk=pk)
     context={
         'paciente': paciente
 

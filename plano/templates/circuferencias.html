@@ -12,7 +12,7 @@
         <h1>Paciente</h1>
         <p>Nome: {{ paciente.nome }}</p>
         <h2>Medidas</h2>
-        <div class="container">
+        <div class="table-responsive">
             <table class="table table-dark">
                 <thead class="flex-column">
                     <tr>
@@ -37,7 +37,7 @@
                         <th scope="col">Coxa Prossimal Esquerda</th>
                         <th scope="col">Panturrilha Direita</th>
                         <th scope="col">Panturrilha Esquerda</th>
-                        <th scope="col">Classificação</th>
+                        <th scope="col">Classificação CQ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,10 +59,10 @@
                             <td scope="row">{{ p.coxadistalesquerda }}</td>
                             <td scope="row">{{ p.coxamedialdireita }}</td>
                             <td scope="row">{{ p.coxamedialesquerda }}</td>
-                            <td scope="row">{{ p.coxaprossimaldireita }}</td>
-                            <td scope="row">{{ p.coxaprossimalesquerda }}</td>
-                            <td scope="row">{{ p.ponturrilhadireita }}</td>
-                            <td scope="row">{{ p.ponturrilhaesquerda }}</td>
+                            <td scope="row">{{ p.coxaproximaldireita }}</td>
+                            <td scope="row">{{ p.coxaproximalesquerda }}</td>
+                            <td scope="row">{{ p.panturrilhadireita }}</td>
+                            <td scope="row">{{ p.panturrilhaesquerda }}</td>
                             <td scope="row">{{ p.classificacao }}</td>
                         </tr>
                     {% endfor %}
