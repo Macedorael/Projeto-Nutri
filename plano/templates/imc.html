@@ -16,23 +16,24 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
+                        <th scope="col">Consulta</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Peso</th>
                         <th scope="col">Altura</th>
                         <th scope="col">Imc</th>
                         <th scope="col">Classificação</th>
-                        <th scope="col">Consulta</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in medidas %}
                         <tr>
+                            <td scope="row">{{ p.criado}}</td>
                             <td scope="row">{{ p.nome }}</td>
                             <td scope="row">{{ p.peso }}</td>
                             <td scope="row">{{ p.altura }}</a></td>
                             <td scope="row">{{ p.imc }}</td>
                             <td scope="row">{{ p.classificacao }}</td>
-                            <td scope="row">{{ p.criado}}</td>
+                            
                         </tr>
                     {% endfor %}
                 </tbody>
