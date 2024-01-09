@@ -15,6 +15,10 @@
             <a href="{% url 'imc' paciente.id %}" class="btn btn-primary">IMC</a>
             <a href="{% url 'circuferencias' paciente.id %}" class="btn btn-primary">CIRCUNFERÊNCIAS</a>
             <a href="{% url 'imc' paciente.id %}" class="btn btn-primary">% GORDURA</a>
+            
+        </div>
+        <div class="d-flex">
+            <a href="{% url 'paciente' paciente.id %}" class="btn btn-primary">Voltar para paciente</a>
         </div>
     </div> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

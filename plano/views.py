@@ -182,6 +182,7 @@ def fazercircuferencia(request,pk):
     paciente = Paciente.objects.get(id=pk)
 
     if request.method == 'POST':
+
         nome = paciente
         pescoco = float(request.POST.get('pescoco'))
         ombro = float(request.POST.get('ombro'))
