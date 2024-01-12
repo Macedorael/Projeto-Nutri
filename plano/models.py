@@ -16,6 +16,7 @@ class Paciente(Base):
     telefone = models.CharField('Telefone', max_length=20)
     email = models.EmailField('E-mail')
     nascimento = models.DateField('Data de Nascimento')
+    genero = models.CharField('Genero', max_length=100)
     
 
     def __str__(self):

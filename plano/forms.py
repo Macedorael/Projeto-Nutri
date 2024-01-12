@@ -4,7 +4,7 @@ from .models import Paciente, Medida, Alimento, Dietas, Refeicao, Circuferencias
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ['nome', 'telefone', 'email','nascimento']
+        fields = ['nome', 'telefone', 'email','nascimento','genero']
 
 class MedidaForm(forms.ModelForm):
     class Meta:

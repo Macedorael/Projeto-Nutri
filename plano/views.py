@@ -204,7 +204,23 @@ def fazercircuferencia(request,pk):
         coxaproximalesquerda = float(request.POST.get('coxaproximalesquerda'))
         panturrilhadireita = float(request.POST.get('panturrilhadireita'))
         panturrilhaesquerda = float(request.POST.get('panturrilhaesquerda'))
-        classificacao = 1
+
+        rcq = cintura / quadril
+        data_nascimento = paciente.nascimento
+        data_atual = date.today()
+        idade = data_atual.year - data_nascimento.year - ((data_atual.month, data_atual.day) < (data_nascimento.month, data_nascimento.day))
+        
+
+        if paciente == 'Masculino':
+
+            if idade <= 29 and rcq < 0.83:
+                classificacao = 'Baixo'
+
+            elif idade <= 29 and rcq < 0.88:
+                classificacao = 'Moderado'
+            
+        print(classificacao)  
+
 
         circuferencias = Circuferencias(nome=nome,pescoco=pescoco, ombro= ombro,torax=torax, bracodireito=bracodireito, bracoesquerdo=bracoesquerdo,  bracodireitocontraido= bracodireitocontraido,
        bracoesquerdocontraido=bracoesquerdocontraido, antebracodireito= antebracodireito, antebracoesquerdo=antebracoesquerdo, 

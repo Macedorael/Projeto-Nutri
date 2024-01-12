@@ -3,7 +3,7 @@ from .models import Paciente, Alimento, Medida, Dietas,Refeicao,Circuferencias
 
 
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ('nome','telefone','email','nascimento','criado','modificado','ativo',)
+    list_display = ('nome','telefone','email','nascimento','criado','modificado','ativo','genero')
 
 class MedidaAdmin(admin.ModelAdmin):
     list_display = ('nome','peso','altura','imc','classificacao','criado')

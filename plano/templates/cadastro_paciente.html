@@ -36,11 +36,19 @@
                 <label for="id_nascimento">Data de Nascimento:</label>
                 <input type="date" class="form-control" id="id_nascimento" name="nascimento" required>
             </div>
+            <label for="masculino">Masculino</label>
+            <input type="radio" id="masculino" name="genero" value="Masculino">
+            
+            <label for="feminino">Feminino</label>
+            <input type="radio" id="feminino" name="genero" value="Feminino"><br>
+
             <button type="submit" class="btn btn-primary">Cadastrar</button>
             <a class="btn" href="/painel/">Voltar para painel</a>
         </form>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
