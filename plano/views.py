@@ -211,24 +211,119 @@ def fazercircuferencia(request,pk):
         idade = data_atual.year - data_nascimento.year - ((data_atual.month, data_atual.day) < (data_nascimento.month, data_nascimento.day))
         
 
-        if paciente == 'Masculino':
+        if paciente.genero == 'Masculino':
 
-            if idade <= 29 and rcq < 0.83:
-                classificacao = 'Baixo'
+            if idade <= 29:
+                if rcq < 0.83:
+                    classificacao = 'Baixo'
+                elif rcq < 0.88:
+                    classificacao = 'Moderado'
+                elif rcq < 0.94:
+                    classificacao = 'Alto'
+                elif rcq > 0.94:
+                    classificacao = 'Muito Alto'
 
-            elif idade <= 29 and rcq < 0.88:
-                classificacao = 'Moderado'
-            
-        print(classificacao)  
+            elif idade <= 39:
+                if rcq < 0.84:
+                    classificacao = 'Baixo'
+                elif rcq < 0.91:
+                    classificacao = 'Moderado'
+                elif rcq < 0.96:
+                    classificacao = 'Alto'
+                elif rcq > 0.96:
+                    classificacao = 'Muito Alto'
+
+            elif idade <= 49:
+                if rcq < 0.88:
+                    classificacao = 'Baixo'
+                elif rcq < 0.95:
+                    classificacao = 'Moderado'
+                elif rcq < 0.100:
+                    classificacao = 'Alto'
+                elif rcq > 0.100:
+                    classificacao = 'Muito Alto'
+
+            elif idade <= 59:
+                if rcq < 0.90:
+                    classificacao = 'Baixo'
+                elif rcq < 0.96:
+                    classificacao = 'Moderado'
+                elif rcq < 0.102:
+                    classificacao = 'Alto'
+                elif rcq > 0.102:
+                    classificacao = 'Muito Alto'
+
+            elif idade > 59:
+                if rcq < 0.91:
+                    classificacao = 'Baixo'
+                elif rcq < 0.98:
+                    classificacao = 'Moderado'
+                elif rcq < 0.103:
+                    classificacao = 'Alto'
+                elif rcq > 0.103:
+                    classificacao = 'Muito Alto'
+
+        elif paciente.genero == 'Feminino':
+
+            if idade <= 29:
+                if rcq < 0.71:
+                    classificacao = 'Baixo'
+                elif rcq < 0.77:
+                    classificacao = 'Moderado'
+                elif rcq < 0.82:
+                    classificacao = 'Alto'
+                elif rcq > 0.82:
+                    classificacao = 'Muito Alto'
+
+            elif idade <= 39:
+                if rcq < 0.72:
+                    classificacao = 'Baixo'
+                elif rcq < 0.78:
+                    classificacao = 'Moderado'
+                elif rcq < 0.84:
+                    classificacao = 'Alto'
+                elif rcq > 0.84:
+                    classificacao = 'Muito Alto'
+
+            elif idade <= 49:
+                if rcq < 0.73:
+                    classificacao = 'Baixo'
+                elif rcq < 0.79:
+                    classificacao = 'Moderado'
+                elif rcq < 0.87:
+                    classificacao = 'Alto'
+                elif rcq > 0.87:
+                    classificacao = 'Muito Alto'
+
+            elif idade <= 59:
+                if rcq < 0.74:
+                    classificacao = 'Baixo'
+                elif rcq < 0.81:
+                    classificacao = 'Moderado'
+                elif rcq < 0.88:
+                    classificacao = 'Alto'
+                elif rcq > 0.88:
+                    classificacao = 'Muito Alto'
+
+            elif idade > 59:
+                if rcq < 0.76:
+                    classificacao = 'Baixo'
+                elif rcq < 0.83:
+                    classificacao = 'Moderado'
+                elif rcq < 0.90:
+                    classificacao = 'Alto'
+                elif rcq > 0.90:
+                    classificacao = 'Muito Alto'
+
 
 
         circuferencias = Circuferencias(nome=nome,pescoco=pescoco, ombro= ombro,torax=torax, bracodireito=bracodireito, bracoesquerdo=bracoesquerdo,  bracodireitocontraido= bracodireitocontraido,
-       bracoesquerdocontraido=bracoesquerdocontraido, antebracodireito= antebracodireito, antebracoesquerdo=antebracoesquerdo, 
-       cintura=cintura, abdome=abdome, quadril=quadril, coxadistaldireita=coxadistaldireita, coxadistalesquerda=coxadistalesquerda, 
-       coxamedialdireita=coxamedialdireita, coxamedialesquerda=coxamedialesquerda, coxaproximaldireita=coxaproximaldireita,
-       coxaproximalesquerda=coxaproximalesquerda, panturrilhadireita=panturrilhadireita, panturrilhaesquerda=panturrilhaesquerda,
-       classificacao=classificacao
-         )
+        bracoesquerdocontraido=bracoesquerdocontraido, antebracodireito= antebracodireito, antebracoesquerdo=antebracoesquerdo, 
+        cintura=cintura, abdome=abdome, quadril=quadril, coxadistaldireita=coxadistaldireita, coxadistalesquerda=coxadistalesquerda, 
+        coxamedialdireita=coxamedialdireita, coxamedialesquerda=coxamedialesquerda, coxaproximaldireita=coxaproximaldireita,
+        coxaproximalesquerda=coxaproximalesquerda, panturrilhadireita=panturrilhadireita, panturrilhaesquerda=panturrilhaesquerda,
+        classificacao=classificacao)
+
         circuferencias.save()
 
         
