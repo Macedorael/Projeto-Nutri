@@ -18,6 +18,7 @@
                     <thead class="flex-column">
                         <tr>
                             <th scope="col">Consulta</th>
+                            <th scope="col">Classificação CQ</th>
                             <th scope="col">Pescoço</th>
                             <th scope="col">Ombro</th>
                             <th scope="col">Torax</th>
@@ -38,13 +39,14 @@
                             <th scope="col">Coxa Prossimal Esquerda</th>
                             <th scope="col">Panturrilha Direita</th>
                             <th scope="col">Panturrilha Esquerda</th>
-                            <th scope="col">Classificação CQ</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
                         {% for p in circuferencias %}
                             <tr>
                                 <td scope="row">{{ p.criado  }}</td>
+                                <td scope="row">{{ p.classificacao }}</td>
                                 <td scope="row">{{ p.pescoco  }}</td>
                                 <td scope="row">{{ p.ombro }}</a></td>
                                 <td scope="row">{{ p.torax  }}</td>
@@ -65,7 +67,7 @@
                                 <td scope="row">{{ p.coxaproximalesquerda }}</td>
                                 <td scope="row">{{ p.panturrilhadireita }}</td>
                                 <td scope="row">{{ p.panturrilhaesquerda }}</td>
-                                <td scope="row">{{ p.classificacao }}</td>
+                                
                             </tr>
                         {% endfor %}
                     </tbody>
