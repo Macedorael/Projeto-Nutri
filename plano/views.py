@@ -179,8 +179,8 @@ def fazermedida(request,pk):
     return render(request, 'fazermedida.html',context)
 
 def fazercircuferencia(request,pk):
-    paciente = Paciente.objects.get(id=pk)
 
+    paciente = Paciente.objects.get(id=pk)
     if request.method == 'POST':
 
         nome = paciente
@@ -322,14 +322,13 @@ def fazercircuferencia(request,pk):
         cintura=cintura, abdome=abdome, quadril=quadril, coxadistaldireita=coxadistaldireita, coxadistalesquerda=coxadistalesquerda, 
         coxamedialdireita=coxamedialdireita, coxamedialesquerda=coxamedialesquerda, coxaproximaldireita=coxaproximaldireita,
         coxaproximalesquerda=coxaproximalesquerda, panturrilhadireita=panturrilhadireita, panturrilhaesquerda=panturrilhaesquerda,
-        classificacao=classificacao)
+        classificacao=classificacao, rcq=rcq)
 
         circuferencias.save()
 
         
         return redirect('circuferencias',pk=pk)
     context={
-        'paciente': paciente
-
-    }
+        'paciente': paciente,
+        'rcq': rcq    }
     return render(request, 'fazercircuferencias.html',context)

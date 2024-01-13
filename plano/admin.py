@@ -11,7 +11,7 @@ class MedidaAdmin(admin.ModelAdmin):
 class CircuferenciasAdmin(admin.ModelAdmin):
     list_display = ('nome','pescoco','ombro','torax','bracodireito','bracoesquerdo','bracodireitocontraido','bracoesquerdocontraido','antebracodireito','antebracoesquerdo',
                     'cintura','abdome','quadril','coxadistaldireita','coxadistalesquerda','coxamedialdireita','coxamedialesquerda','coxaproximaldireita','coxaproximalesquerda',
-                    'panturrilhadireita','panturrilhaesquerda','classificacao','criado')
+                    'panturrilhadireita','panturrilhaesquerda','classificacao','rcq','criado')
 
 
 class AlimentoAdmin(admin.ModelAdmin):

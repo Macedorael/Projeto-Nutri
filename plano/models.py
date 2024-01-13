@@ -56,6 +56,7 @@ class Circuferencias(Base):
     panturrilhadireita = models.DecimalField('Panturrilhadireita', max_digits=15, decimal_places=2)
     panturrilhaesquerda = models.DecimalField('Panturrilhaesquerda', max_digits=15, decimal_places=2)
     classificacao = models.CharField('Classificação', max_length=20)
+    rcq = models.DecimalField('Rcq', max_digits=15, decimal_places=2)
 
     def __str__(self) -> str:
         return self.nome

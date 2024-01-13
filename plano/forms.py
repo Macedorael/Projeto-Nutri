@@ -16,7 +16,7 @@ class CircuferenciasForm(forms.ModelForm):
         model = Circuferencias
         fields = ['nome','pescoco','ombro','torax','bracodireito','bracoesquerdo','bracodireitocontraido','bracoesquerdocontraido','antebracodireito','antebracoesquerdo',
                     'cintura','abdome','quadril','coxadistaldireita','coxadistalesquerda','coxamedialdireita','coxamedialesquerda','coxaproximaldireita','coxaproximalesquerda',
-                    'panturrilhadireita','panturrilhaesquerda','classificacao']
+                    'panturrilhadireita','panturrilhaesquerda','classificacao','rcq']
 
 
 class AlimentoForm(forms.ModelForm):

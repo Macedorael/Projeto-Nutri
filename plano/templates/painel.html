@@ -20,6 +20,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">E-mail</th>
+                    <th scope="col">Início</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                         <td scope="row"><a href="{% url 'paciente' p.id %}">{{ p.nome }}</a></td>
                         <td scope="row">{{ p.telefone }}</td>
                         <td scope="row">{{ p.email }}</td>
+                        <td scope="row">{{ p.criado }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
