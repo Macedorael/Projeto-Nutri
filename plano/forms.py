@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente, Medida, Alimento, Dietas, Refeicao, Circuferencias
+from .models import Paciente, Medida, Alimentos, Dietas, Refeicao, Circuferencias
 
 class PacienteForm(forms.ModelForm):
     class Meta:
@@ -21,8 +21,8 @@ class CircuferenciasForm(forms.ModelForm):
 
 class AlimentoForm(forms.ModelForm):
     class Meta:
-        model = Alimento
-        fields = ['nome', 'peso', 'proteina']
+        model = Alimentos
+        fields = ['nome', 'categoria']
 
 class DietasForm(forms.ModelForm):
     class Meta:
