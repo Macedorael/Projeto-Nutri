@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from .bdo import PacienteService
 from .forms import PacienteForm, AlimentoForm, DietasForm,MedidaForm,CircuferenciasForm
-from .models import Paciente, Alimento,Medida,Dietas,Refeicao,Circuferencias
+from .models import Paciente, Alimentos,Medida,Dietas,Refeicao,Circuferencias
 from django.contrib import messages
 from django.db.models import  Q
 from django.utils.dateparse import parse_date

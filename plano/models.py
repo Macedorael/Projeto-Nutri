@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 timezone.now
+from django.db.models import  Q
 
 
 class Base(models.Model):
@@ -60,15 +61,44 @@ class Circuferencias(Base):
 
     def __str__(self) -> str:
         return self.nome
-
-class Alimento(Base):
+    
+class Categorias(Base):
     nome = models.CharField('Nome', max_length=100)
-    peso = models.DecimalField('Peso', max_digits=15,decimal_places=3)
-    proteina = models.DecimalField('Proteina', max_digits=15, decimal_places=3)
 
     def __str__(self) -> str:
         return self.nome
     
+
+class Nutrientes(models.Model):
+    nome = models.CharField('Nome', max_length=100)
+    unidade = models.CharField('Unidade',max_length=100)
+
+    def __str__(self) -> str:
+        return self.nome
+    
+
+class Alimentos(models.Model):
+    nome = models.CharField('Nome', max_length=100)
+    categoria = models.ForeignKey(Categorias,on_delete=models.CASCADE)
+    
+
+    def __str__(self) -> str:
+        return self.nome
+    
+
+class Valorenegeticos(models.Model):
+    alimento = models.ForeignKey(Alimentos,on_delete=models.CASCADE)
+    nutriente = models.ForeignKey(Nutrientes,on_delete=models.CASCADE)
+    valor = models.DecimalField('Valor',max_digits=15, decimal_places=2)
+
+    @property
+    def nutrientevalor(self):
+        return self.nutriente.nome+':'+str(self.valor)
+
+    def __str__(self) -> str:
+        return self.alimento.nome+':'+self.nutriente.nome+':'+str(self.valor)
+
+
 class Refeicao(Base):
     refeicoes = models.CharField('Refeições',max_length=30)
 
@@ -79,7 +109,17 @@ class Dietas(Base):
     refeicoes = models.ForeignKey(Refeicao, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     quantidade = models.IntegerField('Quantidade')
-    alimento = models.ForeignKey(Alimento, on_delete=models.CASCADE)
+    alimento = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
 
+    @property
+    def nutrientes(self):
+
+        return Valorenegeticos.objects.filter(Q(alimento_id= self.alimento.id))
+    
+    
+
+        
     def __str__(self) -> str:
         return f'{self.refeicoes}'
+
+
