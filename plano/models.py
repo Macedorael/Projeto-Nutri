@@ -60,44 +60,49 @@ class Circuferencias(Base):
     rcq = models.DecimalField('Rcq', max_digits=15, decimal_places=2)
 
     def __str__(self) -> str:
-        return self.nome
+        return self.nome.nome
     
-class Categorias(Base):
+class Categorias(models.Model):
     nome = models.CharField('Nome', max_length=100)
 
     def __str__(self) -> str:
         return self.nome
-    
-
-class Nutrientes(models.Model):
-    nome = models.CharField('Nome', max_length=100)
-    unidade = models.CharField('Unidade',max_length=100)
-
-    def __str__(self) -> str:
-        return self.nome
-    
+        
 
 class Alimentos(models.Model):
     nome = models.CharField('Nome', max_length=100)
-    categoria = models.ForeignKey(Categorias,on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
+    umidade = models.FloatField('Umidade')
+    energiakcal = models.FloatField('Energia kcal')
+    energiakj = models.FloatField('Energia kj')
+    proteina = models.FloatField('Proteína')
+    lipideos = models.FloatField('Lipídeos')
+    colesterol = models.FloatField('Colesterol')
+    carboidrato = models.FloatField('Carboidrato')
+    fibraalimentar = models.FloatField('Fibra Alimentar')
+    cinzas = models.FloatField('Cinzas')
+    calcio = models.FloatField('Cálcio')
+    magnesio = models.FloatField('Magnésio')
+    manganes = models.FloatField('Manganês')
+    fosforo = models.FloatField('Fósforo ')
+    ferro = models.FloatField('Ferro')
+    sodio = models.FloatField('Sódio')
+    potassio = models.FloatField('Potássio')
+    cobre = models.FloatField('Cobre')
+    zinco = models.FloatField('Zinco')
+    retinol = models.FloatField('Retinol')
+    tiamina = models.FloatField('Tiamina')
+    riboflavina = models.FloatField('Riboflavina')
+    piridoxina = models.FloatField('Piridoxina')
+    niacina = models.FloatField('Niacina')
+    vitaminac = models.FloatField('Vitamina C')
+    
+    
     
 
     def __str__(self) -> str:
         return self.nome
     
-
-class Valorenegeticos(models.Model):
-    alimento = models.ForeignKey(Alimentos,on_delete=models.CASCADE)
-    nutriente = models.ForeignKey(Nutrientes,on_delete=models.CASCADE)
-    valor = models.DecimalField('Valor',max_digits=15, decimal_places=2)
-
-    @property
-    def nutrientevalor(self):
-        return self.nutriente.nome+':'+str(self.valor)
-
-    def __str__(self) -> str:
-        return self.alimento.nome+':'+self.nutriente.nome+':'+str(self.valor)
-
 
 class Refeicao(Base):
     refeicoes = models.CharField('Refeições',max_length=30)
@@ -105,18 +110,12 @@ class Refeicao(Base):
     def __str__(self) -> str:
         return f'{self.refeicoes}'
     
+
 class Dietas(Base):
     refeicoes = models.ForeignKey(Refeicao, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     quantidade = models.IntegerField('Quantidade')
     alimento = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
-
-    @property
-    def nutrientes(self):
-
-        return Valorenegeticos.objects.filter(Q(alimento_id= self.alimento.id))
-    
-    
 
         
     def __str__(self) -> str:

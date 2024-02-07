@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Paciente, Alimentos, Medida, Dietas,Refeicao,Circuferencias,Nutrientes,Valorenegeticos,Categorias
+from .models import Paciente, Alimentos, Medida, Dietas,Refeicao,Circuferencias,Categorias
 
 
 class PacienteAdmin(admin.ModelAdmin):
@@ -15,7 +15,9 @@ class CircuferenciasAdmin(admin.ModelAdmin):
 
 
 class AlimentoAdmin(admin.ModelAdmin):
-    list_display = ('nome','categoria')
+    list_display = ('nome','categoria','umidade','energiakcal','energiakj','proteina','lipideos','colesterol','carboidrato','fibraalimentar',
+                    'cinzas','calcio','magnesio','manganes','fosforo','ferro','sodio','potassio','cobre','zinco','retinol','tiamina','riboflavina',
+                    'piridoxina','niacina','vitaminac')
 
 
 class DietasAdmin(admin.ModelAdmin):
@@ -23,9 +25,6 @@ class DietasAdmin(admin.ModelAdmin):
 
 class RefeicaoAdmin(admin.ModelAdmin):
     list_display = ('id', 'refeicoes')
-
-class NutrientesAdmin(admin.ModelAdmin):
-    list_display = ('nome','unidade')
 
 
 class ValorenegeticosAdmin(admin.ModelAdmin):
@@ -42,6 +41,4 @@ admin.site.register(Alimentos, AlimentoAdmin)
 admin.site.register(Dietas, DietasAdmin)
 admin.site.register(Refeicao, RefeicaoAdmin)
 admin.site.register(Circuferencias, CircuferenciasAdmin)
-admin.site.register(Nutrientes, NutrientesAdmin)
-admin.site.register(Valorenegeticos, ValorenegeticosAdmin)
 admin.site.register(Categorias, CategoriasAdmin)
