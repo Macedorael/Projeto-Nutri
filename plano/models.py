@@ -123,7 +123,7 @@ class Refeicao(Base):
 class Dietas(Base):
     refeicoes = models.ForeignKey(Refeicao, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    quantidade = models.IntegerField('Quantidade')
+    quantidade = models.FloatField('Quantidade')
     alimento = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
 
         

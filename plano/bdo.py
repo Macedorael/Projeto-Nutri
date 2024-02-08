@@ -39,25 +39,25 @@ class PacienteService():
 
     def get_soma_proteinas(self, dictProteinas):
 
-        total_proteina_cafe_manha = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['cafe_manha'])
+        total_proteina_cafe_manha = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['cafe_manha'])
         total_proteina_cafe_manha = round(total_proteina_cafe_manha, 3) 
 
-        total_proteina_belisquete_almoco = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['belisquete_almoco'])
+        total_proteina_belisquete_almoco = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['belisquete_almoco'])
         total_proteina_belisquete_almoco = round(total_proteina_belisquete_almoco, 3) 
         
-        total_proteina_almoco = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['almoco'])
+        total_proteina_almoco = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['almoco'])
         total_proteina_almoco = round(total_proteina_almoco, 3) 
 
-        total_proteina_cafe_tarde = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['cafe_tarde'])
+        total_proteina_cafe_tarde = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['cafe_tarde'])
         total_proteina_cafe_tarde = round(total_proteina_cafe_tarde, 3)
 
-        total_proteina_jantar = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['jantar'])
+        total_proteina_jantar = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['jantar'])
         total_proteina_jantar = round(total_proteina_jantar, 3)
 
-        total_proteina_belisquete_jantar = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['belisquete_jantar'])
+        total_proteina_belisquete_jantar = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['belisquete_jantar'])
         total_proteina_belisquete_jantar = round(total_proteina_belisquete_jantar, 3)
 
-        total_proteina_pernoite = sum(d.alimento.proteina * d.quantidade for d in dictProteinas['pernoite'])
+        total_proteina_pernoite = sum(float(d.alimento.proteina) * float(d.quantidade) for d in dictProteinas['pernoite'])
         total_proteina_pernoite = round(total_proteina_pernoite, 3)
 
         ret = {}
