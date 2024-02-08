@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Paciente, Alimentos, Medida, Dietas,Refeicao,Circuferencias,Categorias
+from .models import Paciente, Alimentos, Medida, Dietas,Refeicao,Circuferencias,Categorias,Gorduras
 
 
 class PacienteAdmin(admin.ModelAdmin):
@@ -33,6 +33,9 @@ class ValorenegeticosAdmin(admin.ModelAdmin):
 class CategoriasAdmin(admin.ModelAdmin):
     list_display = ['nome']
 
+class GordurasAdmin(admin.ModelAdmin):
+    list_display = ('nome','saturados','monoinsaturados','poliinsaturados')
+
 
 
 admin.site.register(Paciente, PacienteAdmin)
@@ -42,3 +45,4 @@ admin.site.register(Dietas, DietasAdmin)
 admin.site.register(Refeicao, RefeicaoAdmin)
 admin.site.register(Circuferencias, CircuferenciasAdmin)
 admin.site.register(Categorias, CategoriasAdmin)
+admin.site.register(Gorduras, GordurasAdmin)

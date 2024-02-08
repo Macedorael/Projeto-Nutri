@@ -103,6 +103,15 @@ class Alimentos(models.Model):
     def __str__(self) -> str:
         return self.nome
     
+class Gorduras(models.Model):
+    nome = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
+    saturados = models.FloatField('Saturados')
+    monoinsaturados =models.FloatField('Monoinsaturados') 
+    poliinsaturados =models.FloatField('Poliinsaturados')
+
+    def __str__(self) -> str:
+        return self.nome.nome
+    
 
 class Refeicao(Base):
     refeicoes = models.CharField('Refeições',max_length=30)
