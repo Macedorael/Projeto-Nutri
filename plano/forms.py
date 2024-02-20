@@ -27,7 +27,7 @@ class AlimentoForm(forms.ModelForm):
 class DietasForm(forms.ModelForm):
     class Meta:
         model = Dietas
-        fields = ['refeicoes','paciente', 'quantidade', 'alimento']
+        fields = ['refeicoes', 'quantidade', 'alimento']
 
 class RefeicaoForm(forms.ModelForm):
     class Meta:

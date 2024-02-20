@@ -5,16 +5,16 @@ class PacienteService():
 
     def get_dietas_by_paciente_and_data(self,paciente, data_especifica):
         filters=[None] * 7
-        filters[0] = Q(refeicoes__refeicoes__icontains='Café da manhã') & Q(paciente__nome=paciente.nome)
-        filters[1] = Q(refeicoes__refeicoes__icontains='Belisquete almoço') & Q(paciente__nome=paciente.nome)
-        filters[2] = Q(refeicoes__refeicoes='Almoço') & Q(paciente__nome=paciente.nome)
-        filters[3] = Q(refeicoes__refeicoes__icontains='Café da tarde') & Q(paciente__nome=paciente.nome)
-        filters[4] = Q(refeicoes__refeicoes__icontains='Jantar') & Q(paciente__nome=paciente.nome)
-        filters[5] = Q(refeicoes__refeicoes__icontains='Belisquete jantar') & Q(paciente__nome=paciente.nome)
-        filters[6] = Q(refeicoes__refeicoes__icontains='Pernoite') & Q(paciente__nome=paciente.nome)
+        filters[0] = Q(refeicoes__refeicoes__icontains='Café da manhã') & Q(plano__paciente__nome=paciente.nome)
+        filters[1] = Q(refeicoes__refeicoes__icontains='Belisquete almoço') & Q(plano__paciente__nome=paciente.nome)
+        filters[2] = Q(refeicoes__refeicoes='Almoço') & Q(plano__paciente__nome=paciente.nome)
+        filters[3] = Q(refeicoes__refeicoes__icontains='Café da tarde') & Q(plano__paciente__nome=paciente.nome)
+        filters[4] = Q(refeicoes__refeicoes__icontains='Jantar') & Q(plano__paciente__nome=paciente.nome)
+        filters[5] = Q(refeicoes__refeicoes__icontains='Belisquete jantar') & Q(plano__paciente__nome=paciente.nome)
+        filters[6] = Q(refeicoes__refeicoes__icontains='Pernoite') & Q(plano__paciente__nome=paciente.nome)
         if data_especifica:
             # Filtrando as datas manualmente, comparando apenas dia, mês e ano
-            filterData = Q(criado__day=data_especifica.day) & Q(criado__month=data_especifica.month) & Q(criado__year=data_especifica.year)
+            filterData = Q(plano__criado__day=data_especifica.day) & Q(plano__criado__month=data_especifica.month) & Q(plano__criado__year=data_especifica.year)
             for contador in range(0,7):
                 filters[contador] = filters[contador] & filterData
 

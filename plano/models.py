@@ -119,10 +119,16 @@ class Refeicao(Base):
     def __str__(self) -> str:
         return f'{self.refeicoes}'
     
-
-class Dietas(Base):
-    refeicoes = models.ForeignKey(Refeicao, on_delete=models.CASCADE)
+class PlanoAlimentar(Base):
+    nome = models.CharField('Plano',max_length=30)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.nome}'
+    
+class Dietas(Base):
+    plano = models.ForeignKey(PlanoAlimentar, on_delete=models.CASCADE)
+    refeicoes = models.ForeignKey(Refeicao, on_delete=models.CASCADE)
     quantidade = models.FloatField('Quantidade')
     alimento = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
 
