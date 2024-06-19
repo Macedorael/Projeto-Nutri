@@ -49,7 +49,7 @@ class GordurasAdmin(admin.ModelAdmin):
     list_display = ('nome','saturados','monoinsaturados','poliinsaturados')
 
 class PlanoAlimentarAdmin(admin.ModelAdmin):
-    list_display = ('nome','paciente','criado')
+    list_display = ('id','nome','paciente','criado')
 
 
 admin.site.register(Paciente, PacienteAdmin)

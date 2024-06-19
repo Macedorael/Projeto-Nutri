@@ -1,0 +1,46 @@
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciente</title>
+    <link rel="shortcut icon" href="{% static 'css/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+        <div class="container">
+            <h1>Paciente</h1>
+            <p>Nome: {{ paciente.nome }}</p>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Planos</th>
+                        <th scope="col">Criação</th>
+                        <th scope="col">Ultima Atualização</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plano in planos %}
+                        <tr>
+                            <td scope="row"><a href="{% url 'plano' plano.id %}">{{ plano }}</a></td>
+                            <td scope="row">{{ plano.criado }}</td>
+                            <td scope="row">{{ plano.modificado }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <div class="d-flex">
+            <a href="{% url 'criar_plano' paciente.id %}" class="btn btn-success">Criar Novo Plano</a>
+        </div>
+        <div class="d-flex">
+        <a href="{% url 'painel' %}" class="btn btn-primary">Voltar para painel</a>
+        </div>
+
+        
+    </div> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente, Medida, Alimentos, Dietas, Refeicao, Circuferencias
+from .models import Paciente, Medida, Alimentos, Dietas, Refeicao, Circuferencias, PlanoAlimentar
 
 class PacienteForm(forms.ModelForm):
     class Meta:
@@ -27,9 +27,17 @@ class AlimentoForm(forms.ModelForm):
 class DietasForm(forms.ModelForm):
     class Meta:
         model = Dietas
-        fields = ['refeicoes', 'quantidade', 'alimento']
+        fields = ['refeicoes','plano','quantidade', 'alimento']
 
 class RefeicaoForm(forms.ModelForm):
     class Meta:
         model = Refeicao
         fields = ['id','refeicoes']
+
+class PlanoAlimentarForm(forms.ModelForm):
+    class Meta:
+        model = PlanoAlimentar
+        fields = ['nome']  # Especifique os campos do PlanoAlimentar que você quer no formulário
+        labels = {
+            'nome': 'Nome do Plano',  # Rótulos amigáveis para os campos, se necessário
+        }

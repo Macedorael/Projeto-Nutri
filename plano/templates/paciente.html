@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paciente</title>
+    <link rel="shortcut icon" href="{% static 'css/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
@@ -23,7 +24,7 @@
         <p>{{classificacao}}</p>
 
         <div class="d-flex">
-            <a href="{% url 'plano' paciente.id %}" class="btn btn-primary">Fazer Plano</a>
+            <a href="{% url 'planos' paciente.id %}" class="btn btn-primary">Fazer Plano</a>
             <a href="{% url 'antropometria' paciente.id %}" class="btn btn-primary">Antropometria</a>
         </div>
 

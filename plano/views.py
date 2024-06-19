@@ -3,8 +3,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 
 from .bdo import PacienteService
-from .forms import PacienteForm, AlimentoForm, DietasForm,MedidaForm,CircuferenciasForm
-from .models import Paciente, Alimentos,Medida,Dietas,Refeicao,Circuferencias
+from .forms import PacienteForm, AlimentoForm, DietasForm,MedidaForm,CircuferenciasForm,PlanoAlimentarForm
+from .models import Paciente, Alimentos,Medida,Dietas,Refeicao,Circuferencias,PlanoAlimentar
 from django.contrib import messages
 from django.db.models import  Q
 from django.utils.dateparse import parse_date
@@ -53,45 +53,7 @@ def painel(request):
     }
     return render(request, 'painel.html',context)
 
-
-
-def plano(request, pk):
-    paciente_form = Paciente.objects.get(id=pk)
-    paciente = Paciente.objects.get(id=pk)
-    data_especifica = None
-    data_especifica_frm = None
-
-    if request.method == 'POST':
-        try:
-            data_especifica = request.POST.get('data_especifica')
-            data_especifica_frm = parse_date(data_especifica)
-        except:
-            pass
-
-        form = DietasForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('plano', pk=pk) 
-    else:
-        form = DietasForm(initial={'paciente': paciente})
-
-    objPacienteService = PacienteService()
-    retDietaPaciente = objPacienteService.get_dietas_by_paciente_and_data(paciente, data_especifica_frm)
-    retSomaProteinas = objPacienteService.get_soma_proteinas(retDietaPaciente)
-
-    context = {
-        'paciente_form': paciente_form,
-        'form': form,
-        'paciente': paciente,
-        'data_filtro' : data_especifica
-    }
-    context.update(retDietaPaciente)
-    context.update(retSomaProteinas)
-    
-    return render(request, 'plano.html', context)
-
-
-def paciente(request, pk):
+def pacientes(request,pk):
     paciente = Paciente.objects.get(id=pk)
     medida = Medida.objects.filter(id=pk)
     data_nascimento = paciente.nascimento
@@ -107,6 +69,90 @@ def paciente(request, pk):
     }
     return render(request, 'paciente.html',context)
 
+def criar_plano(request, pk):
+    paciente = Paciente.objects.get(id=pk)
+    if request.method == 'POST':
+        form = PlanoAlimentarForm(request.POST)
+        if form.is_valid():
+            plano = form.save(commit=False)
+            plano.paciente = paciente
+            plano.save()
+            return redirect('planos', pk=paciente.id)  # Redireciona para a página do paciente
+    else:
+        form = PlanoAlimentarForm()
+
+    return render(request, 'criar_plano.html', {'form': form, 'paciente': paciente})
+
+
+
+def plano(request, plano_id):
+    plano = get_object_or_404(PlanoAlimentar, id=plano_id)
+    paciente = plano.paciente
+
+    if request.method == 'POST':
+        
+        form = DietasForm(request.POST)
+        if form.is_valid():
+            dieta = form.save(commit=False)
+            dieta.plano = plano
+            dieta.paciente = paciente
+            # Supondo que refeicoes_id seja um campo ForeignKey
+            refeicoes_id = request.POST.get('refeicoes')
+            refeicao = Refeicao.objects.get(id=refeicoes_id)
+            dieta.refeicoes = refeicao
+            dieta.save()
+            return redirect('plano', plano_id=plano_id) 
+    else:
+        form = DietasForm(initial={'paciente': paciente})
+
+    objPacienteService = PacienteService()
+    retDietaPaciente = objPacienteService.get_dietas_by_paciente_and_plano(paciente, plano)
+    retSomaProteinas = objPacienteService.get_soma_proteinas(retDietaPaciente)
+    retSomaCarboitrados = objPacienteService.get_soma_carboidratos(retDietaPaciente)
+
+    context = {
+        'form': form,
+        'paciente': paciente,
+        'plano': plano,
+    }
+    context.update(retDietaPaciente)
+    context.update(retSomaProteinas)
+    context.update(retSomaCarboitrados)
+    
+    return render(request, 'plano.html', context)
+
+
+def planos(request, pk):
+    paciente = Paciente.objects.get(id=pk)
+    planos = PlanoAlimentar.objects.filter(paciente=paciente)
+    
+    context = {
+        'paciente': paciente,
+        'planos': planos,
+    }
+    return render(request, 'planos.html', context)
+
+
+
+def paciente(request, pk):
+    pacientes = Paciente.objects.get(id=pk)
+    plano = get_object_or_404(PlanoAlimentar, id=pk)
+    paciente = plano.paciente
+    medidas = Medida.objects.filter(nome=paciente)  # Corrigido para filtrar por paciente, não por plano
+    
+    data_nascimento = paciente.nascimento
+    
+    data_atual = date.today()
+    idade = data_atual.year - data_nascimento.year - ((data_atual.month, data_atual.day) < (data_nascimento.month, data_atual.day))
+
+    context = {
+        'paciente': paciente,
+        'medidas': medidas,
+        'idade': idade,
+        'plano': plano,
+    }
+    return render(request, 'paciente.html', context)
+
 def antropometria(request,pk):
     paciente = Paciente.objects.get(id=pk)
     context = {
@@ -117,7 +163,7 @@ def antropometria(request,pk):
     
 
 def imc(request, pk):
-    paciente = Paciente.objects.get(id=pk)
+    paciente = get_object_or_404(Paciente, id=pk)  # Corrigido para usar o modelo Paciente
     medidas = Medida.objects.filter(nome=paciente)
     context = {
         'paciente': paciente,
