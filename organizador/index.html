@@ -335,7 +335,7 @@ const AREAS = [
 ];
 const AREA = Object.fromEntries(AREAS.map(a=>[a.id,a]));
 // Símbolo da Mac3dos (redesenhado em vetor a partir do logo)
-const MAC3DOS_LOGO='<svg class="logo" viewBox="0 0 57 82" aria-hidden="true"><path d="M0 0L29 29L0 54Z" fill="#D8D6D9"/><path d="M57 0L29 29L0 54H57Z" fill="#A027FE"/><path d="M0 54H57L28.5 82Z" fill="#420A4F"/></svg>';
+const MAC3DOS_LOGO='<svg class="logo" viewBox="0 0 57 82" aria-hidden="true"><path d="M0 0L29 29L0 54Z" fill="#ABA7B1"/><path d="M57 0L29 29L0 54H57Z" fill="#A027FE"/><path d="M0 54H57L28.5 82Z" fill="#420A4F"/></svg>';
 function ico(a){ return a.logo ? MAC3DOS_LOGO : `<span class="emo">${a.emoji}</span>`; }
 function lbl(a){ return (a.emoji?a.emoji+' ':'')+a.nome; }
 // Etiquetas dentro do Pessoal
