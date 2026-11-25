@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Minha Vida em Ordem</title>
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#F2F2F7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Vida em Ordem">
 <link rel="manifest" href="manifest.json">
@@ -15,26 +15,29 @@
 <style>
 /* Layout: uma coluna estreita (como um caderno), barra de navegação fixa embaixo, botão + sempre à mão */
 :root{
-  --bg:#f5f4f0; --bg-base:#f5f4f0; --surface:#ffffff; --surface-2:#eceae3; --line:#dcd9cf;
-  --fg:#1d2321; --muted:#626b67; --accent:#0f766e; --accent-fg:#ffffff; --accent-soft:#d5ece8;
-  --warn:#b45309; --warn-soft:#fdebd3; --danger:#b42318; --ok:#15803d;
-  --a-consultorio:#1d8348; --a-mac3dos:#6d4bd1; --a-pessoal:#c2417f; --a-todas:#0f766e; --on-area:#ffffff;
-  --font-display:"Manrope", "Segoe UI", system-ui, sans-serif;
-  --font-body:"Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --bg:#F2F2F7; --bg-base:#F2F2F7; --surface:#FFFFFF; --surface-2:rgba(118,118,128,.12); --line:rgba(60,60,67,.18);
+  --fg:#000000; --muted:rgba(60,60,67,.62); --accent:#007AFF; --accent-fg:#FFFFFF; --accent-soft:rgba(0,122,255,.12);
+  --warn:#C93400; --warn-soft:#FFF1E0; --danger:#FF3B30; --ok:#34C759;
+  --a-consultorio:#248A3D; --a-mac3dos:#8E2DE2; --a-pessoal:#E0245E; --a-todas:#007AFF; --on-area:#FFFFFF;
+  --fill:rgba(118,118,128,.12); --bar:rgba(249,249,249,.86); --switch-off:rgba(120,120,128,.16);
+  --font-display:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Manrope", "Segoe UI", system-ui, sans-serif;
+  --font-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Manrope", "Segoe UI", system-ui, sans-serif;
   --radius:14px; --tint:13%;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#141917; --bg-base:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
-  --fg:#eef2ef; --muted:#9aa7a1; --accent:#2dd4bf; --accent-fg:#06201d; --accent-soft:#163a35;
-  --warn:#f59e0b; --warn-soft:#3a2a10; --danger:#f87171; --ok:#4ade80;
-  --a-consultorio:#5fd08a; --a-mac3dos:#a38bff; --a-pessoal:#f58cbd; --a-todas:#2dd4bf; --on-area:#111614;
+  --bg:#000000; --bg-base:#000000; --surface:#1C1C1E; --surface-2:rgba(118,118,128,.24); --line:rgba(84,84,88,.65);
+  --fg:#FFFFFF; --muted:rgba(235,235,245,.6); --accent:#0A84FF; --accent-fg:#FFFFFF; --accent-soft:rgba(10,132,255,.2);
+  --warn:#FF9F0A; --warn-soft:#3A2A10; --danger:#FF453A; --ok:#30D158;
+  --a-consultorio:#30D158; --a-mac3dos:#BF5AF2; --a-pessoal:#FF375F; --a-todas:#0A84FF; --on-area:#FFFFFF;
+  --fill:rgba(118,118,128,.24); --bar:rgba(22,22,24,.84); --switch-off:rgba(120,120,128,.32);
   --tint:11%; color-scheme:dark; } }
 :root[data-theme="dark"]{--tint:11%;
-  --bg:#141917; --bg-base:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
-  --fg:#eef2ef; --muted:#9aa7a1; --accent:#2dd4bf; --accent-fg:#06201d; --accent-soft:#163a35;
-  --warn:#f59e0b; --warn-soft:#3a2a10; --danger:#f87171; --ok:#4ade80;
-  --a-consultorio:#5fd08a; --a-mac3dos:#a38bff; --a-pessoal:#f58cbd; --a-todas:#2dd4bf; --on-area:#111614;
+  --bg:#000000; --bg-base:#000000; --surface:#1C1C1E; --surface-2:rgba(118,118,128,.24); --line:rgba(84,84,88,.65);
+  --fg:#FFFFFF; --muted:rgba(235,235,245,.6); --accent:#0A84FF; --accent-fg:#FFFFFF; --accent-soft:rgba(10,132,255,.2);
+  --warn:#FF9F0A; --warn-soft:#3A2A10; --danger:#FF453A; --ok:#30D158;
+  --a-consultorio:#30D158; --a-mac3dos:#BF5AF2; --a-pessoal:#FF375F; --a-todas:#0A84FF; --on-area:#FFFFFF;
+  --fill:rgba(118,118,128,.24); --bar:rgba(22,22,24,.84); --switch-off:rgba(120,120,128,.32);
   color-scheme:dark; }
 
 :root[data-space="consultorio"]{--accent:var(--a-consultorio); --accent-fg:var(--on-area); --bg:color-mix(in srgb,var(--a-consultorio) var(--tint),var(--bg-base)); --accent-soft:color-mix(in srgb,var(--a-consultorio) 22%,var(--bg-base))}
@@ -207,6 +210,83 @@ dialog::backdrop{background:rgb(10 15 13 / .55)}
 @keyframes drop{from{transform:translateY(-12px); opacity:.4} to{transform:none; opacity:1}}
 @media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
 @media (max-width:420px){ .grid2{grid-template-columns:1fr} h1{font-size:1.5rem} }
+/* ===== Visual iOS: listas agrupadas, barra translúcida, interruptores e folha que sobe ===== */
+body{-webkit-font-smoothing:antialiased}
+h1{font-size:2.125rem; font-weight:700; letter-spacing:.004em}
+@media (max-width:420px){ h1{font-size:1.85rem} }
+h2{font-size:1.25rem; font-weight:700; letter-spacing:-.01em}
+.sub{font-size:.95rem}
+.icon-btn{background:none; border:0; width:44px; height:44px; color:var(--accent)}
+.icon-btn svg{width:28px; height:28px}
+.count{background:none; color:var(--muted); font-weight:600; font-size:.95rem; padding:0}
+.big{font-weight:700}
+/* lista agrupada, como no app Lembretes */
+.list{gap:0; background:var(--surface); border-radius:12px; overflow:hidden}
+.task{border:0; border-radius:0; background:transparent; padding:11px 10px 11px 14px; position:relative}
+.task + .task::before{content:""; position:absolute; top:0; left:52px; right:0; border-top:.5px solid var(--line)}
+.check{width:24px; height:24px; margin-top:0}
+.t-title{font-weight:500; font-size:1.02rem}
+.meta{gap:2px 10px; font-size:.82rem}
+.chip{background:none!important; padding:0; border-radius:0; font-weight:500; color:var(--muted)}
+.chip.area{color:var(--area)} .chip.late{color:var(--danger)} .chip.star{color:var(--warn)}
+.mini{background:var(--fill); border-radius:999px; min-width:32px; height:32px; padding:0 10px; color:var(--accent); font-weight:600}
+.empty{border:0; background:var(--surface); border-radius:12px}
+.capture input{border:0; border-radius:12px; padding:12px 14px}
+.capture input:focus{box-shadow:0 0 0 2px var(--accent)}
+.capture button,.btn{border-radius:12px; font-weight:600}
+.btn.ghost{background:var(--accent-soft); color:var(--accent)}
+.btn.danger{border:0; background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.progress{border:0; border-radius:16px}
+.bar{height:6px}
+.banner{border-radius:12px}
+.fchip{border:0; font-weight:500}
+.fchip[aria-pressed="true"]{background:var(--accent); color:var(--accent-fg)}
+.hpill{border:0; font-weight:500}
+.habit{border:0; border-radius:12px}
+.focus{border:0; border-radius:20px}
+.timer{font-weight:300; letter-spacing:-.02em}
+.mode-tabs{background:var(--fill); border-radius:9px; padding:2px; gap:0}
+.mode-tabs button{border-radius:7px; font-weight:600; font-size:.85rem}
+.mode-tabs button[aria-pressed="true"]{box-shadow:0 3px 8px rgb(0 0 0 / .12),0 3px 1px rgb(0 0 0 / .04)}
+.col{background:var(--fill)} .card{border:0}
+.sp{box-shadow:0 2px 10px rgb(0 0 0 / .06)}
+.space-h{border-left:0; background:transparent; padding:4px 2px; font-size:1.25rem}
+.space-h .go{color:var(--accent); font-size:.95rem; font-weight:500}
+/* barra de abas translúcida */
+nav.tabs{background:var(--bar); -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px); border-top:.5px solid var(--line)}
+nav.tabs button{font-size:.66rem; font-weight:500; gap:3px; padding:4px 0}
+nav.tabs button[aria-current="page"]{background:none; color:var(--accent)}
+nav.tabs .ic svg{width:26px; height:26px; display:block}
+nav.tabs .ic .f, nav.tabs button[aria-current="page"] .ic .o{display:none}
+nav.tabs button[aria-current="page"] .ic .f{display:block}
+.fab{border-radius:50%; width:56px; height:56px; display:grid; place-items:center; font-weight:300; font-size:2.2rem; line-height:1; box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 40%,transparent)}
+/* folha (janela de editar) */
+dialog{background:var(--bg)}
+dialog::backdrop{background:rgb(0 0 0 / .35)}
+.modal::before{content:""; align-self:center; width:36px; height:5px; border-radius:3px; background:var(--switch-off); margin:-6px 0 -4px}
+.field input,.field select,.field textarea{background:var(--surface); border:0; border-radius:10px}
+.toggle{background:var(--surface); border:0; border-radius:10px; font-weight:500}
+@media (max-width:600px){
+  dialog{width:100%; max-width:100%; margin:auto 0 0; border-radius:14px 14px 0 0; max-height:94dvh}
+  dialog[open]{animation:sheet .32s cubic-bezier(.2,.8,.2,1)}
+  .modal{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+}
+@keyframes sheet{from{transform:translateY(100%)}}
+/* interruptor do iOS */
+.toggle input[type=checkbox]{-webkit-appearance:none; appearance:none; order:9; margin:0 0 0 auto; width:51px; height:31px; border-radius:16px; background:var(--switch-off); position:relative; flex:none; cursor:pointer; transition:background .25s}
+.toggle input[type=checkbox]::after{content:""; position:absolute; top:2px; left:2px; width:27px; height:27px; border-radius:50%; background:#fff; box-shadow:0 3px 8px rgb(0 0 0 / .15),0 1px 1px rgb(0 0 0 / .16); transition:transform .25s}
+.toggle input[type=checkbox]:checked{background:#34C759}
+.toggle input[type=checkbox]:checked::after{transform:translateX(20px)}
+.toggle:has(select) input[type=checkbox]{margin-left:10px}
+.toggle select{margin-left:auto; color:var(--muted)}
+.subitem input[type=checkbox]{-webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--muted); flex:none; margin:0; display:grid; place-items:center}
+.subitem input[type=checkbox]:checked{background:var(--accent); border-color:var(--accent)}
+.subitem input[type=checkbox]:checked::after{content:"✓"; color:#fff; font-size:13px; font-weight:700}
+/* avisos como as notificações do iPhone */
+.toast{background:color-mix(in srgb,var(--surface) 84%,transparent); color:var(--fg); -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%); border-radius:22px; box-shadow:0 10px 30px rgb(0 0 0 / .18)}
+.toast .acts button{background:var(--fill); color:var(--accent); border-radius:999px; font-weight:600}
+#snack .toast{background:color-mix(in srgb,var(--fg) 82%,transparent); color:var(--bg-base); border-radius:999px}
+#snack .toast .acts button{background:color-mix(in srgb,var(--bg-base) 22%,transparent); color:var(--bg-base)}
 </style>
 </head>
 <body>
@@ -219,12 +299,12 @@ dialog::backdrop{background:rgb(10 15 13 / .55)}
 
 <nav class="tabs" aria-label="Seções">
   <div class="inner">
-    <button data-view="hoje"><span class="ic">☀️</span>Hoje</button>
-    <button data-view="tarefas"><span class="ic">✅</span>Tarefas</button>
-    <button data-view="agenda"><span class="ic">📅</span>Agenda</button>
-    <button data-view="rotina"><span class="ic">🔁</span>Rotina</button>
-    <button data-view="conteudo"><span class="ic">🎬</span>Conteúdo</button>
-    <button data-view="foco"><span class="ic">🎯</span>Foco</button>
+    <button data-view="hoje"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg></span>Hoje</button>
+    <button data-view="tarefas"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128ZM128,72h88a8,8,0,0,0,0-16H128a8,8,0,0,0,0,16Zm88,112H128a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16ZM82.34,42.34,56,68.69,45.66,58.34A8,8,0,0,0,34.34,69.66l16,16a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,82.34,42.34Zm0,64L56,132.69,45.66,122.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Zm0,64L56,196.69,45.66,186.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0-11.32-11.32Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM117.66,149.66l-32,32a8,8,0,0,1-11.32,0l-16-16a8,8,0,0,1,11.32-11.32L80,164.69l26.34-26.35a8,8,0,0,1,11.32,11.32Zm0-64-32,32a8,8,0,0,1-11.32,0l-16-16A8,8,0,0,1,69.66,90.34L80,100.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM192,168H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Zm0-64H144a8,8,0,0,1,0-16h48a8,8,0,0,1,0,16Z"/></svg></span>Tarefas</button>
+    <button data-view="agenda"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,48H48V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24Z"/></svg></span>Agenda</button>
+    <button data-view="rotina"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1-5.66-13.66L180.65,72a79.48,79.48,0,0,0-54.72-22.09h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27,96,96,0,0,1,192,60.7l18.36-18.36A8,8,0,0,1,224,48ZM186.41,183.29A80,80,0,0,1,75.35,184l18.31-18.31A8,8,0,0,0,88,152H40a8,8,0,0,0-8,8v48a8,8,0,0,0,13.66,5.66L64,195.3a95.42,95.42,0,0,0,66,26.76h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"/></svg></span>Rotina</button>
+    <button data-view="conteudo"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.83Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07L164.57,71,136.44,54.72ZM77.55,70.27l28.12,16.24-59.6,15.73-6-22.08Z"/></svg></span>Conteúdo</button>
+    <button data-view="foco"><span class="ic"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M221.87,83.16A104.1,104.1,0,1,1,195.67,49l22.67-22.68a8,8,0,0,1,11.32,11.32l-96,96a8,8,0,0,1-11.32-11.32l27.72-27.72a40,40,0,1,0,17.87,31.09,8,8,0,1,1,16-.9,56,56,0,1,1-22.38-41.65L184.3,60.39a87.88,87.88,0,1,0,23.13,29.67,8,8,0,0,1,14.44-6.9Z"/></svg><svg class="f" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M221.87,83.16A104.1,104.1,0,1,1,195.67,49l22.67-22.68a8,8,0,0,1,11.32,11.32L167.6,99.71h0l-37.71,37.71-23.95,23.95a40,40,0,0,0,62-35.67,8,8,0,1,1,16-.9,56,56,0,0,1-95.5,42.79h0a56,56,0,0,1,73.13-84.43L184.3,60.39a87.88,87.88,0,1,0,23.13,29.67,8,8,0,0,1,14.44-6.9Z"/></svg></span>Foco</button>
   </div>
 </nav>
 
@@ -452,7 +532,7 @@ function spaceBarHTML(){
 function headerHTML(title, sub){
   const sp=space!=='todas'?AREA[space]:null;
   return `<header class="top"><div><h1>${sp&&view!=='conteudo'?`<span class="h-space">${ico(sp)} ${sp.nome}</span> · `:''}${title}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div>
-    <button class="icon-btn" data-act="settings" aria-label="Configurações e backup">⚙️</button></header>${view==='conteudo'?'':spaceBarHTML()}`;
+    <button class="icon-btn" data-act="settings" aria-label="Configurações e backup"><svg class="o" aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A112.1,112.1,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.62a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.08,8.08,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8.08,8.08,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z"/></svg></button></header>${view==='conteudo'?'':spaceBarHTML()}`;
 }
 function captureHTML(ph){
   return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>`;
