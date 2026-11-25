@@ -6,17 +6,43 @@
   "start_url": "./index.html#hoje",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f4f0",
-  "theme_color": "#0f766e",
+  "background_color": "#2B0F44",
+  "theme_color": "#2B0F44",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
   ],
   "shortcuts": [
-    { "name": "Hoje", "url": "./index.html#hoje" },
-    { "name": "Modo foco", "url": "./index.html#foco" },
-    { "name": "Conteúdo", "url": "./index.html#conteudo" }
+    {
+      "name": "Hoje",
+      "url": "./index.html#hoje"
+    },
+    {
+      "name": "Modo foco",
+      "url": "./index.html#foco"
+    },
+    {
+      "name": "Conteúdo",
+      "url": "./index.html#conteudo"
+    }
   ]
 }
