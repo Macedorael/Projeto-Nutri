@@ -4,7 +4,7 @@ App para organizar tudo num lugar só, separado em **3 espaços**:
 
 - 👩‍⚕️ **Consultório**: pacientes, consultas, retornos
 - **Mac3dos** (com o símbolo da marca): clientes, propostas, reuniões
-- 💜 **Pessoal**: com etiquetas 📚 Estudos, 💪 Academia, 📱 Redes e 🏠 Casa & vida
+- 🤍 **Pessoal**: com etiquetas 📚 Estudos, 💪 Academia, 📱 Redes e 🏠 Casa & vida
 
 No topo de toda tela há 4 botões grandes: **🌎 Tudo · Consultório · Mac3dos · Pessoal**.
 O número em cada botão mostra quantas tarefas faltam hoje, e o app muda de cor conforme o espaço.
