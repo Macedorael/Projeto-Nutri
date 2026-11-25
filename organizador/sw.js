@@ -1,6 +1,6 @@
 // Service worker: deixa o app funcionando offline e trata o toque nas notificações.
-const CACHE = 'vida-em-ordem-v2';
-const FILES = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'vida-em-ordem-v3';
+const FILES = ['./', './index.html', './manifest.json', './icon.svg', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
