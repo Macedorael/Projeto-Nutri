@@ -231,9 +231,9 @@ dialog::backdrop{background:rgb(10 15 13 / .55)}
 /* ================== Dados básicos ================== */
 // Os 3 espaços da vida. O campo "area" de cada tarefa guarda um destes ids.
 const AREAS = [
-  {id:'consultorio', nome:'Consultório', emoji:'🩺', palavras:['paciente','pacientes','consulta','dieta','plano alimentar','retorno','anamnese','cardapio','bioimpedancia','avaliacao','prescricao','atendimento','consultorio','nutri','agenda de pacientes']},
+  {id:'consultorio', nome:'Consultório', emoji:'👩‍⚕️', palavras:['paciente','pacientes','consulta','dieta','plano alimentar','retorno','anamnese','cardapio','bioimpedancia','avaliacao','prescricao','atendimento','consultorio','nutri','agenda de pacientes']},
   {id:'mac3dos',     nome:'Mac3dos',     emoji:'💼', palavras:['mac3dos','macedos','cliente','clientes','reuniao','proposta','orcamento','nota fiscal','contrato','fornecedor']},
-  {id:'pessoal',     nome:'Pessoal',     emoji:'🌸', palavras:[]},
+  {id:'pessoal',     nome:'Pessoal',     emoji:'💜', palavras:[]},
 ];
 const AREA = Object.fromEntries(AREAS.map(a=>[a.id,a]));
 // Etiquetas dentro do Pessoal
@@ -437,7 +437,7 @@ function greeting(){ const h=new Date().getHours(); return h<12?'Bom dia':h<18?'
 function spaceBarHTML(){
   const t=today();
   const cnt=id=>S.tasks.filter(x=>!x.done && x.date && x.date<=t && (id==='todas'||x.area===id)).length;
-  const opts=[{id:'todas',nome:'Tudo',emoji:'🗂️'},...AREAS];
+  const opts=[{id:'todas',nome:'Tudo',emoji:'🌎'},...AREAS];
   return `<div class="spacebar" role="group" aria-label="Escolher espaço">${opts.map(o=>{ const c=cnt(o.id);
     return `<button class="sp" style="--area:var(--a-${o.id})" data-act="space" data-space="${o.id}" aria-pressed="${space===o.id}" aria-label="${o.nome}: ${c} para hoje"><span class="sp-e">${o.emoji}</span><span class="sp-n">${o.nome}</span>${c?`<span class="sp-c">${c}</span>`:''}</button>`; }).join('')}</div>`;
 }
