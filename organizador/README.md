@@ -1,6 +1,14 @@
 # 🗂️ Minha Vida em Ordem
 
-App para organizar tudo num lugar só: **Pessoal, Nutrição, Mac3dos, Estudos, Redes sociais e Academia**.
+App para organizar tudo num lugar só, separado em **3 espaços**:
+
+- 🩺 **Consultório**: pacientes, consultas, retornos
+- 💼 **Mac3dos**: clientes, propostas, reuniões
+- 🌸 **Pessoal**: com etiquetas 📚 Estudos, 💪 Academia, 📱 Redes e 🏠 Casa & vida
+
+No topo de toda tela há 4 botões grandes: **Tudo · Consultório · Mac3dos · Pessoal**.
+O número em cada botão mostra quantas tarefas faltam hoje, e o app muda de cor conforme o espaço.
+Em **Tudo** você vê a visão geral do dia, com um bloco para cada espaço.
 Funciona no celular e no computador, instala como aplicativo e funciona até sem internet.
 
 ## O que ele faz
@@ -8,7 +16,7 @@ Funciona no celular e no computador, instala como aplicativo e funciona até sem
 | Tela | Para quê |
 |---|---|
 | ☀️ **Hoje** | Só o que importa hoje: progresso do dia, **Foco do dia (máx. 3 prioridades)**, tarefas atrasadas (com botão "passar para hoje"), rotina e o que ficou sem data. |
-| ✅ **Tarefas** | Todas as tarefas separadas por área, com filtro por cor. |
+| ✅ **Tarefas** | Todas as tarefas do espaço escolhido. No Pessoal, filtre por Estudos, Academia, Redes ou Casa. |
 | 📅 **Agenda** | Próximas 2 semanas e posts programados. Exporta tudo para a agenda do celular. |
 | 🔁 **Rotina** | Hábitos diários (água, treino, estudar, story…) com sequência de dias 🔥. |
 | 🎬 **Conteúdo** | Quadro das redes: Ideia → Roteiro → Gravado → Editado → Postado. |
@@ -17,14 +25,16 @@ Funciona no celular e no computador, instala como aplicativo e funciona até sem
 ### Anotar rápido, do seu jeito
 Escreva no campo do topo como se fosse um bilhete. O app entende:
 
-- `consulta Ana amanhã 14h` → Nutrição, amanhã, lembrete às 14h
-- `gravar reels sexta 18h #redes` → Redes sociais, sexta, 18h
-- `treino todo dia 7h` → Academia, repete todo dia
+- `consulta Ana amanhã 14h` → Consultório, amanhã, lembrete às 14h
+- `gravar reels sexta 18h #redes` → Pessoal › Redes, sexta, 18h
+- `proposta cliente sexta 10h` → Mac3dos
+- `treino todo dia 7h` → Pessoal › Academia, repete todo dia
 - `reunião mac3dos segunda às 10`
 - `estudar bioquímica 12/12`
 - termine com `!` para virar **prioridade**
 
-A área é descoberta pelas palavras (paciente, reels, treino, aula…) ou pela `#área`.
+O espaço é descoberto assim: se você escrever `#consultorio`, `#mac3dos`, `#pessoal`, `#estudos`, `#academia` ou `#redes`, vale o que escreveu.
+Senão, se estiver dentro de um espaço, a tarefa vai para ele. Senão, o app adivinha pelas palavras (paciente, cliente, treino, aula, reels…).
 
 ### Lembretes
 - Na hora de cada tarefa: notificação + som + vibração, com botões **Feito**, **Adiar 10 min**, **Adiar 1 h** e **Focar**.
