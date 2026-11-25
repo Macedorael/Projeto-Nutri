@@ -63,15 +63,15 @@ section.block{margin-top:22px; display:flex; flex-direction:column; gap:10px}
 /* Seletor de espaços */
 .spacebar{position:sticky; top:env(safe-area-inset-top,0px); z-index:15; display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(4px,1.4vw,8px); padding-block:10px 8px; background:var(--bg)}
 .sp{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 1px 8px; border-radius:14px; border:2px solid var(--line); background:var(--surface); font-weight:800; font-size:.78rem; min-width:0; color:var(--fg)}
-.sp-e{font-size:1.45rem; line-height:1}
+.sp-e{font-size:1.45rem; line-height:1; height:1.75rem; display:grid; place-items:center}
 .sp-n{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; font-size:clamp(.64rem,2.9vw,.8rem); font-weight:600; letter-spacing:-.03em}
 .sp-c{position:absolute; top:-7px; right:-3px; min-width:22px; height:22px; border-radius:11px; background:var(--area); color:var(--on-area); font-size:.72rem; display:grid; place-items:center; padding:0 6px; font-variant-numeric:tabular-nums}
 .sp[aria-pressed="true"]{background:var(--area); border-color:var(--area); color:var(--on-area)}
 .sp[aria-pressed="true"] .sp-c{background:var(--surface); color:var(--fg); box-shadow:0 0 0 2px var(--area)}
 h1 .h-space{color:var(--accent)}
 .logo{height:1.2em; width:auto; vertical-align:-.2em; flex:none}
-.sp-e .logo{height:1.6rem; margin-block:-.08rem}
-.sp[aria-pressed="true"] .sp-e .logo{background:#fff; border-radius:8px; padding:3px 5px; height:1.6rem; margin-block:-.08rem}
+.sp-e .logo{height:1.6rem}
+.sp[aria-pressed="true"] .sp-e .logo{background:#fff; border-radius:8px; padding:3px 5px; height:1.75rem}
 .space-h{width:100%; display:flex; align-items:center; gap:10px; border:0; border-left:6px solid var(--area); border-radius:12px; padding:12px 14px; background:color-mix(in srgb,var(--area) 14%,var(--surface)); color:var(--fg); font-family:var(--font-display); font-size:1.1rem; font-weight:700; text-align:left}
 .space-h .go{margin-left:auto; font-family:var(--font-body); font-size:.82rem; color:var(--muted)}
 
