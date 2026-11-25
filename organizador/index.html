@@ -15,34 +15,34 @@
 <style>
 /* Layout: uma coluna estreita (como um caderno), barra de navegação fixa embaixo, botão + sempre à mão */
 :root{
-  --bg:#f5f4f0; --surface:#ffffff; --surface-2:#eceae3; --line:#dcd9cf;
+  --bg:#f5f4f0; --bg-base:#f5f4f0; --surface:#ffffff; --surface-2:#eceae3; --line:#dcd9cf;
   --fg:#1d2321; --muted:#626b67; --accent:#0f766e; --accent-fg:#ffffff; --accent-soft:#d5ece8;
   --warn:#b45309; --warn-soft:#fdebd3; --danger:#b42318; --ok:#15803d;
   --a-consultorio:#1d8348; --a-mac3dos:#6d4bd1; --a-pessoal:#c2417f; --a-todas:#0f766e; --on-area:#ffffff;
   --font-display:"Poppins", "Segoe UI", system-ui, sans-serif;
   --font-body:"Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --radius:14px;
+  --radius:14px; --tint:13%;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
+  --bg:#141917; --bg-base:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
   --fg:#eef2ef; --muted:#9aa7a1; --accent:#2dd4bf; --accent-fg:#06201d; --accent-soft:#163a35;
   --warn:#f59e0b; --warn-soft:#3a2a10; --danger:#f87171; --ok:#4ade80;
   --a-consultorio:#5fd08a; --a-mac3dos:#a38bff; --a-pessoal:#f58cbd; --a-todas:#2dd4bf; --on-area:#111614;
-  color-scheme:dark; } }
-:root[data-theme="dark"]{
-  --bg:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
+  --tint:11%; color-scheme:dark; } }
+:root[data-theme="dark"]{--tint:11%;
+  --bg:#141917; --bg-base:#141917; --surface:#1d2421; --surface-2:#26302c; --line:#33403b;
   --fg:#eef2ef; --muted:#9aa7a1; --accent:#2dd4bf; --accent-fg:#06201d; --accent-soft:#163a35;
   --warn:#f59e0b; --warn-soft:#3a2a10; --danger:#f87171; --ok:#4ade80;
   --a-consultorio:#5fd08a; --a-mac3dos:#a38bff; --a-pessoal:#f58cbd; --a-todas:#2dd4bf; --on-area:#111614;
   color-scheme:dark; }
 
-:root[data-space="consultorio"]{--accent:var(--a-consultorio); --accent-fg:var(--on-area); --accent-soft:color-mix(in srgb,var(--a-consultorio) 16%,var(--bg))}
-:root[data-space="mac3dos"]{--accent:var(--a-mac3dos); --accent-fg:var(--on-area); --accent-soft:color-mix(in srgb,var(--a-mac3dos) 16%,var(--bg))}
-:root[data-space="pessoal"]{--accent:var(--a-pessoal); --accent-fg:var(--on-area); --accent-soft:color-mix(in srgb,var(--a-pessoal) 16%,var(--bg))}
+:root[data-space="consultorio"]{--accent:var(--a-consultorio); --accent-fg:var(--on-area); --bg:color-mix(in srgb,var(--a-consultorio) var(--tint),var(--bg-base)); --accent-soft:color-mix(in srgb,var(--a-consultorio) 22%,var(--bg-base))}
+:root[data-space="mac3dos"]{--accent:var(--a-mac3dos); --accent-fg:var(--on-area); --bg:color-mix(in srgb,var(--a-mac3dos) var(--tint),var(--bg-base)); --accent-soft:color-mix(in srgb,var(--a-mac3dos) 22%,var(--bg-base))}
+:root[data-space="pessoal"]{--accent:var(--a-pessoal); --accent-fg:var(--on-area); --bg:color-mix(in srgb,var(--a-pessoal) var(--tint),var(--bg-base)); --accent-soft:color-mix(in srgb,var(--a-pessoal) 22%,var(--bg-base))}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:16px; line-height:1.45;
+body{background:var(--bg); transition:background-color .35s ease; color:var(--fg); font-family:var(--font-body); font-size:16px; line-height:1.45;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));
   -webkit-tap-highlight-color:transparent}
 button,input,select,textarea{font:inherit; color:inherit}
@@ -447,8 +447,7 @@ function headerHTML(title, sub){
     <button class="icon-btn" data-act="settings" aria-label="Configurações e backup">⚙️</button></header>${view==='conteudo'?'':spaceBarHTML()}`;
 }
 function captureHTML(ph){
-  return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>
-  ${view!=='hoje'?'':`<div class="hint">Escreva do seu jeito: <code>consulta Ana amanhã 14h</code> · <code>proposta cliente sexta 10h #mac3dos</code> · <code>treino todo dia 7h</code> · termine com <code>!</code> para prioridade</div>`}`;
+  return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>`;
 }
 function notifBanner(){
   if(!('Notification' in window)) return `<div class="banner warn"><p>Este navegador não mostra notificações. Os lembretes aparecem dentro do app. Para avisos com o app fechado, use <b>📅 Adicionar à agenda</b> em cada tarefa.</p></div>`;
@@ -629,6 +628,7 @@ function startTick(){
 function render(){
   const views={hoje:viewHoje, tarefas:viewTarefas, agenda:viewAgenda, rotina:viewRotina, conteudo:viewConteudo, foco:viewFoco};
   if(space==='todas') document.documentElement.removeAttribute('data-space'); else document.documentElement.setAttribute('data-space',space);
+  setTimeout(()=>{ const tc=document.querySelector('meta[name=theme-color]'); if(tc) tc.content=getComputedStyle(document.body).backgroundColor; },400);
   app.innerHTML=(views[view]||viewHoje)();
   document.querySelectorAll('nav.tabs button').forEach(b=>{ if(b.dataset.view===view) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
 }
@@ -717,6 +717,8 @@ function openSettings(){
   <div class="field"><label for="s-name">Como posso te chamar?</label><input id="s-name" value="${esc(s.name)}" placeholder="Seu nome"></div>
   <div class="grid2"><div class="field"><label for="s-morning">☀️ Lembrete para planejar o dia</label><input id="s-morning" type="time" value="${s.morning}"></div>
   <div class="field"><label for="s-evening">🌙 Lembrete para revisar o dia</label><input id="s-evening" type="time" value="${s.evening}"></div></div>
+  <div class="field"><span class="lbl">Como anotar rápido</span>
+    <div class="sub">Escreva como um bilhete. O app entende o dia, a hora e o espaço:<br>• consulta Ana amanhã 14h<br>• proposta cliente sexta 10h #mac3dos<br>• treino todo dia 7h<br>• termine com ! para virar prioridade</div></div>
   <div class="field"><label for="s-theme">Aparência</label><select id="s-theme"><option value="">Igual ao celular</option><option value="light" ${s.theme==='light'?'selected':''}>Clara</option><option value="dark" ${s.theme==='dark'?'selected':''}>Escura</option></select></div>
   <div class="field"><span class="lbl">Lembretes</span><div class="row-btns" style="justify-content:flex-start"><button type="button" class="btn small ghost" data-dlg="testNotif">🔔 Testar lembrete</button></div></div>
   <div class="field"><span class="lbl">Backup (seus dados ficam só neste aparelho)</span>
