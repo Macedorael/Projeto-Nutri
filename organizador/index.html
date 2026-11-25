@@ -301,6 +301,35 @@ dialog::backdrop{background:rgb(0 0 0 / .35)}
 body{background-image:var(--pattern); background-size:var(--pattern-size); background-position:var(--pattern-pos)}
 /* a faixa dos espaços fica translúcida por cima do padrão, como no iPhone */
 .spacebar{background:color-mix(in srgb,var(--bg) 78%,transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); margin-inline:-8px; padding-inline:8px; border-radius:0 0 18px 18px}
+/* ===== Tela limpa ===== */
+:root[data-clean] .hint, :root[data-clean] .clean-hide{display:none!important}
+.now-card{background:var(--surface); border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:4px}
+.now-card .lbl2{font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em}
+.now-card b{font-size:1.15rem; font-weight:600}
+.more{background:var(--surface); border:0; border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; font-weight:500; color:var(--fg); width:100%}
+.more span:last-child{color:var(--accent)}
+/* ===== Planejar a semana ===== */
+.goals{background:var(--surface); border-radius:12px; padding:4px 0}
+.goal{display:flex; align-items:center; gap:10px; padding:8px 14px; font-weight:500}
+.goal + .goal{border-top:.5px solid var(--line)}
+.goal button{flex:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--area,var(--accent)); background:transparent; color:#fff; font-size:12px; font-weight:800; display:grid; place-items:center; padding:0}
+.goal.done button{background:var(--area,var(--accent))}
+.goal.done span{text-decoration:line-through; color:var(--muted)}
+.goal small{margin-left:auto; color:var(--muted); font-size:.78rem}
+.wk-steps{display:flex; gap:6px} .wk-steps span{flex:1; height:4px; border-radius:2px; background:var(--fill)} .wk-steps span.on{background:var(--accent)}
+.wk-row{display:flex; align-items:center; gap:10px; background:var(--surface); padding:10px 12px; border-radius:10px}
+.wk-row span{flex:1; min-width:0; font-weight:500; overflow-wrap:anywhere}
+.wk-row select{flex:none; background:var(--fill); border:0; border-radius:8px; padding:6px 8px; max-width:46%}
+.wk-list{display:flex; flex-direction:column; gap:6px; max-height:46vh; overflow:auto}
+.wk-space{display:flex; flex-direction:column; gap:6px}
+.wk-space h3{font-size:1rem; display:flex; align-items:center; gap:6px}
+.wk-space input{background:var(--surface); border:0; border-radius:10px; padding:10px 12px; width:100%}
+.days{display:grid; grid-template-columns:repeat(auto-fit,minmax(40px,1fr)); gap:6px}
+.days button{border:0; border-radius:10px; padding:10px 0; background:var(--surface); font-weight:600}
+.days button[aria-pressed="true"]{background:var(--accent); color:var(--accent-fg)}
+.plan-banner{display:flex; align-items:center; gap:12px; background:var(--surface); border-radius:16px; padding:14px 16px}
+.plan-banner p{margin:0; flex:1; min-width:0}
+.plan-banner p b{display:block}
 </style>
 </head>
 <body>
@@ -392,7 +421,8 @@ function seed(){
       {id:uid(), title:'Exemplo: 3 lanches práticos para levar na bolsa', platform:'Instagram', stage:'ideia', date:''},
       {id:uid(), title:'Exemplo: mito ou verdade — comer à noite engorda?', platform:'TikTok', stage:'roteiro', date:addDays(t,2)},
     ],
-    settings:{name:'', space:'todas', morning:'07:30', evening:'21:30', lastMorning:'', lastEvening:'', theme:''},
+    settings:{name:'', space:'todas', morning:'07:30', evening:'21:30', lastMorning:'', lastEvening:'', theme:'', clean:false, weekDay:0, weekTime:'19:00', lastWeekNotif:''},
+    weeks:{},
     focus:{taskId:null, mode:'foco', endsAt:null, remaining:25*60, sessions:{}},
   };
 }
@@ -406,7 +436,7 @@ function normalize(){
   const base=seed();
   S.settings=Object.assign(base.settings,S.settings||{});
   S.focus=Object.assign(base.focus,S.focus||{});
-  S.habits=S.habits||[]; S.content=S.content||[];
+  S.habits=S.habits||[]; S.content=S.content||[]; S.weeks=S.weeks||{};
   // versão antiga tinha 6 áreas: converte para os 3 espaços + etiquetas
   const OLD={nutri:['consultorio',''], estudos:['pessoal','estudos'], academia:['pessoal','academia'], redes:['pessoal','redes']};
   for(const x of [...S.tasks, ...S.habits]){
@@ -552,12 +582,28 @@ function captureHTML(ph){
   return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>`;
 }
 function notifBanner(){
+  if(S.settings.clean) return '';
   if(!('Notification' in window)) return `<div class="banner warn"><p>Este navegador não mostra notificações. Os lembretes aparecem dentro do app. Para avisos com o app fechado, use <b>📅 Adicionar à agenda</b> em cada tarefa.</p></div>`;
   if(Notification.permission==='granted') return '';
   if(Notification.permission==='denied') return `<div class="banner warn"><p>As notificações estão bloqueadas. Libere nas configurações do navegador para receber lembretes.</p></div>`;
   return `<div class="banner"><p><b>Ative os lembretes</b> para eu te avisar na hora de cada tarefa.</p><button class="btn small" data-act="askNotif">Ativar</button></div>`;
 }
 
+// Semana: começa na segunda. No domingo, já vale a semana que vem (é quando você planeja).
+function weekKey(ds){ const wd=fromYmd(ds).getDay(); return addDays(ds, wd===0?1:1-wd); }
+function weekGoals(){ const w=S.weeks[weekKey(today())]; return w&&w.goals ? w.goals : {}; }
+function weekPlanned(){ return !!(S.weeks[weekKey(today())]||{}).planned; }
+function goalsHTML(){
+  const g=weekGoals(); const list=AREAS.filter(a=>space==='todas'||a.id===space).flatMap(a=>(g[a.id]||[]).map((x,i)=>({a,x,i})));
+  if(!list.length) return '';
+  return `<section class="block"><h2>🎯 Metas da semana</h2><div class="goals">${list.map(({a,x,i})=>`<div class="goal ${x.d?'done':''}" style="--area:var(--a-${a.id})"><button data-act="goal" data-area="${a.id}" data-i="${i}" aria-label="${x.d?'Desmarcar':'Concluir'} meta: ${esc(x.t)}">${x.d?'✓':''}</button><span>${esc(x.t)}</span>${space==='todas'?`<small>${ico(a)}</small>`:''}</div>`).join('')}</div></section>`;
+}
+function planBannerHTML(){
+  const wd=new Date().getDay();
+  const show=!weekPlanned() && (wd===S.settings.weekDay || wd===1);
+  return show?`<section class="block"><div class="plan-banner"><span style="font-size:1.6rem">🗓️</span><p><b>Planejar a semana</b><span class="sub">3 passos, uns 10 minutos</span></p><button class="btn small" data-act="planWeek">Começar</button></div></section>`:'';
+}
+let showRest=false;
 function viewHoje(){
   const t=today(); const name=S.settings.name?', '+esc(S.settings.name):'';
   const d=new Date(); const dateStr=WEEKDAYS[d.getDay()]+', '+d.getDate()+' de '+d.toLocaleDateString('pt-BR',{month:'long'});
@@ -570,9 +616,30 @@ function viewHoje(){
   const others=pend.filter(x=>!x.star);
   const inbox=all.filter(x=>!x.done && !x.date);
   const total=todays.length+repDone.length, ok=done.length+repDone.length, pct=total?Math.round(ok/total*100):0;
-  const next=pend.filter(x=>x.time).sort(sortTasks)[0];
+  const nowHM=pad(d.getHours())+':'+pad(d.getMinutes());
+  const next=pend.filter(x=>x.time&&x.time>=nowHM).sort(sortTasks)[0] || pend.filter(x=>x.time).sort(sortTasks)[0];
   const habits=S.habits.filter(inSpace);
   const hb=habits.map(h=>{const on=!!h.log[t]; return `<button class="hpill ${on?'on':''}" style="--area:var(--a-${h.area})" data-act="habit" data-id="${h.id}" aria-pressed="${on}">${h.emoji} ${esc(h.name)}</button>`;}).join('');
+  const title=space==='todas'?greeting()+name+' 👋':'Hoje';
+  const starsHTML=`<section class="block"><h2>⭐ Foco do dia <span class="count">${stars.length}/3</span></h2>
+    ${stars.length?listHTML(stars,{showDate:false}):`<div class="empty">${S.settings.clean?'Nenhuma prioridade escolhida. Termine uma anotação com <b>!</b>':'Escolha até 3 coisas que <b>precisam</b> acontecer hoje. Toque numa tarefa e marque “Prioridade”, ou termine a anotação com <b>!</b>'}</div>`}
+    ${stars.length>3?`<div class="banner warn"><p>Você tem ${stars.length} prioridades. Com mais de 3, nada é prioridade. Que tal escolher só 3?</p></div>`:''}
+  </section>`;
+
+  // ---- Tela limpa: só o essencial ----
+  if(S.settings.clean){
+    const restN=others.length+inbox.length;
+    return headerHTML(title, dateStr) + captureHTML() + planBannerHTML() + `
+    <section class="block"><div class="now-card"><span class="lbl2">${next?'Próximo · '+esc(next.time):'Hoje'}</span>
+      <b>${next?esc(next.title):(total?(pct===100?'Tudo feito! 🎉':`${ok} de ${total} feitas`):'Dia livre 🌿')}</b>
+      ${total?`<div class="bar" style="margin-top:6px"><span style="width:${pct}%"></span></div>`:''}</div></section>
+    ${late.length?`<section class="block"><button class="more" data-act="allToToday"><span>⚠️ ${late.length} atrasada${late.length>1?'s':''}</span><span>Passar para hoje</span></button></section>`:''}
+    ${starsHTML}
+    ${goalsHTML()}
+    ${restN?`<section class="block"><button class="more" data-act="toggleRest"><span>📋 Resto do dia e sem data · ${restN}</span><span>${showRest?'Esconder':'Ver'}</span></button>
+      ${showRest?listHTML(others,{showDate:false})+(inbox.length?`<h2 style="margin-top:8px">📥 Sem data</h2>`+listHTML(inbox):''):''}</section>`:''}`;
+  }
+
   let rest;
   if(space==='todas'){
     rest=AREAS.map(a=>{ const list=others.filter(x=>x.area===a.id);
@@ -582,7 +649,7 @@ function viewHoje(){
     rest=`<section class="block"><h2>📋 Resto do dia <span class="count">${others.length}</span></h2>
     ${listHTML(others,{showDate:false}, total?'Tudo do resto do dia está feito 👏':'Nada marcado aqui para hoje. Anote algo lá em cima ↑')}</section>`;
   }
-  return headerHTML(space==='todas'?greeting()+name+' 👋':'Hoje', dateStr) + captureHTML() + `
+  return headerHTML(title, dateStr) + captureHTML() + planBannerHTML() + `
   ${notifBanner()?`<section class="block">${notifBanner()}</section>`:''}
   <section class="block"><div class="progress">
     <div class="row"><span class="big">${ok} de ${total}</span><span class="sub">${total?(pct===100?'Concluído! 🎉':pct+'% feito'):'Nada marcado para hoje ainda'}</span></div>
@@ -592,10 +659,8 @@ function viewHoje(){
   ${late.length?`<section class="block"><h2>⚠️ Ficou para trás <span class="count">${late.length}</span></h2>
     <div class="row-btns" style="justify-content:flex-start"><button class="btn small ghost" data-act="allToToday">Passar todas para hoje</button></div>
     ${listHTML(late,{late:true})}</section>`:''}
-  <section class="block"><h2>⭐ Foco do dia <span class="count">${stars.length}/3</span></h2>
-    ${stars.length?listHTML(stars,{showDate:false}):`<div class="empty">Escolha até 3 coisas que <b>precisam</b> acontecer hoje. Toque numa tarefa e marque “Prioridade”, ou termine a anotação com <b>!</b></div>`}
-    ${stars.length>3?`<div class="banner warn"><p>Você tem ${stars.length} prioridades. Com mais de 3, nada é prioridade. Que tal escolher só 3?</p></div>`:''}
-  </section>
+  ${starsHTML}
+  ${goalsHTML()}
   ${rest}
   ${habits.length?`<section class="block"><h2>🔁 Rotina de hoje</h2><div class="habit-strip">${hb}</div></section>`:''}
   ${inbox.length?`<section class="block"><h2>📥 Sem data <span class="count">${inbox.length}</span></h2>
@@ -642,7 +707,8 @@ function viewAgenda(){
     </section>`;
   }
   return headerHTML('Agenda','Próximas 2 semanas') + captureHTML() +
-    `<section class="block"><div class="banner"><p>📲 <b>Lembrete mesmo com o app fechado:</b> exporte suas tarefas com horário para a agenda do celular (Google Agenda / iPhone). Ela avisa você no horário certo.</p><button class="btn small" data-act="exportIcs">Exportar</button></div></section>` + html;
+    `<section class="block"><button class="more" data-act="planWeek"><span>🗓️ Planejar a semana</span><span>${weekPlanned()?'Rever':'Começar'}</span></button></section>` +
+    `<section class="block clean-hide"><div class="banner"><p>📲 <b>Lembrete mesmo com o app fechado:</b> exporte suas tarefas com horário para a agenda do celular (Google Agenda / iPhone). Ela avisa você no horário certo.</p><button class="btn small" data-act="exportIcs">Exportar</button></div></section>` + html;
 }
 
 function streak(h){ let n=0; let d=today(); if(!h.log[d]) d=addDays(d,-1); while(h.log[d]){ n++; d=addDays(d,-1);} return n; }
@@ -730,6 +796,7 @@ function startTick(){
 function render(){
   const views={hoje:viewHoje, tarefas:viewTarefas, agenda:viewAgenda, rotina:viewRotina, conteudo:viewConteudo, foco:viewFoco};
   if(space==='todas') document.documentElement.removeAttribute('data-space'); else document.documentElement.setAttribute('data-space',space);
+  document.documentElement.toggleAttribute('data-clean', !!S.settings.clean);
   setTimeout(()=>{ const tc=document.querySelector('meta[name=theme-color]'); if(tc) tc.content=getComputedStyle(document.body).backgroundColor; },400);
   app.innerHTML=(views[view]||viewHoje)();
   alignStripes();
@@ -795,10 +862,12 @@ function saveTaskForm(){
   else { editing.id=uid(); editing.done=false; editing.createdAt=Date.now(); S.tasks.push(editing); }
   save(); render(); return true;
 }
-dlgForm.addEventListener('submit',e=>{ e.preventDefault(); if(dlgForm.dataset.kind==='task'){ if(saveTaskForm()) dlg.close(); } else if(dlgForm.dataset.kind==='content'){ saveContentForm(); dlg.close(); } else if(dlgForm.dataset.kind==='settings'){ saveSettings(); dlg.close(); } else dlg.close(); });
+dlgForm.addEventListener('submit',e=>{ e.preventDefault(); if(dlgForm.dataset.kind==='week'){ return; } if(dlgForm.dataset.kind==='task'){ if(saveTaskForm()) dlg.close(); } else if(dlgForm.dataset.kind==='content'){ saveContentForm(); dlg.close(); } else if(dlgForm.dataset.kind==='settings'){ saveSettings(); dlg.close(); } else dlg.close(); });
 dlgForm.addEventListener('click',e=>{
   const b=e.target.closest('[data-dlg]'); if(!b) return; const a=b.dataset.dlg;
   if(a==='close'){ dlg.close(); }
+  else if(a==='wkNext'){ readWeek(); if(wk.step<3){ wk.step++; drawWeek(); dlgForm.scrollTop=0; } else finishWeek(); }
+  else if(a==='wkBack'){ readWeek(); wk.step--; drawWeek(); }
   else if(a==='addSub'){ readTaskForm(); drawTaskForm(); document.getElementById('f-newsub').focus(); }
   else if(a==='delSub'){ readTaskForm(); editing.subtasks.splice(+b.dataset.i,1); drawTaskForm(); }
   else if(a==='delete'){ dlg.close(); deleteTask(editing.id); }
@@ -810,6 +879,7 @@ dlgForm.addEventListener('click',e=>{
   else if(a==='reset'){ if(b.dataset.armed){ localStorage.removeItem(KEY); S=seed(); save(); dlg.close(); render(); } else { b.dataset.armed='1'; b.textContent='Toque de novo para apagar tudo'; } }
 });
 dlgForm.addEventListener('change',e=>{ if(e.target.id==='f-area'){ readTaskForm(); drawTaskForm(); } });
+dlgForm.addEventListener('click',e=>{ const d=e.target.closest('[data-day]'); if(!d||!wk) return; readWeek(); const v=d.dataset.day; wk.days=wk.days.includes(v)?wk.days.filter(x=>x!==v):[...wk.days,v]; drawWeek(); });
 dlgForm.addEventListener('keydown',e=>{ if(e.key==='Enter' && e.target.id==='f-newsub'){ e.preventDefault(); readTaskForm(); drawTaskForm(); document.getElementById('f-newsub').focus(); }});
 
 function openContent(id){
@@ -825,6 +895,67 @@ function openContent(id){
 }
 function saveContentForm(){ const g=id=>document.getElementById(id); Object.assign(editing,{title:g('c-title').value.trim()||editing.title, platform:g('c-platform').value, stage:g('c-stage').value, date:g('c-date').value, notes:g('c-notes').value}); save(); render(); }
 
+let wk=null;
+const DAYS_SHORT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function openWeek(){
+  const key=weekKey(today()); const w=S.weeks[key]||{};
+  const goals={}; AREAS.forEach(a=>goals[a.id]=[0,1,2].map(i=>((w.goals||{})[a.id]||[])[i]?.t||''));
+  wk={step:1, key, moves:{}, goals, days:[], time:'14:00'};
+  dlgForm.dataset.kind='week'; drawWeek(); dlg.showModal();
+}
+function weekDates(){ const t=today(); return [0,1,2,3,4,5,6].map(i=>addDays(wk.key,i)).filter(d=>d>=t); }
+function drawWeek(){
+  const steps=`<div class="wk-steps">${[1,2,3].map(i=>`<span class="${i<=wk.step?'on':''}"></span>`).join('')}</div>`;
+  const head=t=>`<div class="modal-h"><h2>${t}</h2><button type="button" class="icon-btn" data-dlg="close" aria-label="Fechar">✕</button></div>${steps}`;
+  let body='';
+  if(wk.step===1){
+    const t=today(); const items=S.tasks.filter(x=>!x.done && (!x.date || x.date<t)).sort(sortTasks).slice(0,30);
+    const opts=[['','Manter'],['hoje','Hoje'],...weekDates().map(d=>[d,DAYS_SHORT[fromYmd(d).getDay()]+' '+fromYmd(d).getDate()]),['semdata','Sem data'],['feita','Já fiz ✓'],['apagar','Apagar']];
+    body=head('1 de 3 · O que ficou para trás')+`<div class="sub">Decida o destino de cada tarefa atrasada ou sem data. Na dúvida, deixe em "Manter".</div>
+      ${items.length?`<div class="wk-list">${items.map(x=>`<div class="wk-row"><span>${ico(AREA[x.area]||AREA.pessoal)} ${esc(x.title)}${x.date?` <small class="sub">· ${esc(dayLabel(x.date))}</small>`:''}</span>
+        <select data-move="${x.id}" aria-label="Destino de ${esc(x.title)}">${opts.map(([v,l])=>`<option value="${v}" ${wk.moves[x.id]===v?'selected':''}>${l}</option>`).join('')}</select></div>`).join('')}</div>`
+      :`<div class="empty">Nada atrasado e nada sem data. Muito bem! 🎉</div>`}`;
+  } else if(wk.step===2){
+    body=head('2 de 3 · Prioridades da semana')+`<div class="sub">Até 3 coisas importantes em cada espaço. Elas aparecem na tela Hoje a semana toda.</div>
+      ${AREAS.map(a=>`<div class="wk-space" style="--area:var(--a-${a.id})"><h3>${ico(a)} ${a.nome}</h3>
+        ${[0,1,2].map(i=>`<input data-goal="${a.id}" data-i="${i}" value="${esc(wk.goals[a.id][i])}" placeholder="${i===0?(a.id==='consultorio'?'Ex.: enviar 5 planos alimentares':a.id==='mac3dos'?'Ex.: fechar proposta do cliente X':'Ex.: treinar 4 vezes'):'Prioridade '+(i+1)}" autocomplete="off">`).join('')}</div>`).join('')}`;
+  } else {
+    const ideas=S.content.filter(c=>c.stage==='ideia'||c.stage==='roteiro');
+    body=head('3 de 3 · Quando vou gravar conteúdo?')+`<div class="sub">Gravar vários de uma vez rende mais. Escolha os dias e o horário. Eu crio as tarefas com lembrete.</div>
+      <div class="days">${weekDates().map(d=>`<button type="button" data-day="${d}" aria-pressed="${wk.days.includes(d)}">${DAYS_SHORT[fromYmd(d).getDay()]}<br><small>${fromYmd(d).getDate()}</small></button>`).join('')}</div>
+      <div class="field"><label for="wk-time">Horário</label><input id="wk-time" type="time" value="${wk.time}"></div>
+      ${ideas.length?`<div class="sub">Na fila para gravar: ${ideas.slice(0,4).map(c=>'<b>'+esc(c.title)+'</b>').join(', ')}${ideas.length>4?' e mais '+(ideas.length-4):''}.</div>`:`<div class="sub">Sem ideias na fila ainda. Anote algumas na aba Conteúdo.</div>`}`;
+  }
+  body+=`<div class="modal-f">${wk.step>1?`<button type="button" class="btn ghost" data-dlg="wkBack">Voltar</button>`:'<span></span>'}
+    <button type="button" class="btn" data-dlg="wkNext">${wk.step<3?'Próximo':'Concluir ✓'}</button></div>`;
+  dlgForm.innerHTML=body;
+}
+function readWeek(){
+  dlgForm.querySelectorAll('[data-move]').forEach(el=>{ wk.moves[el.dataset.move]=el.value; });
+  dlgForm.querySelectorAll('[data-goal]').forEach(el=>{ wk.goals[el.dataset.goal][+el.dataset.i]=el.value.trim(); });
+  const tm=document.getElementById('wk-time'); if(tm) wk.time=tm.value||'14:00';
+}
+function finishWeek(){
+  let moved=0, made=0;
+  for(const [id,v] of Object.entries(wk.moves)){
+    if(!v) continue; const k=S.tasks.find(x=>x.id===id); if(!k) continue; moved++;
+    if(v==='apagar') S.tasks=S.tasks.filter(x=>x.id!==id);
+    else if(v==='feita'){ k.done=true; k.doneAt=Date.now(); }
+    else if(v==='semdata'){ k.date=''; k.notified=false; }
+    else { k.date = v==='hoje'?today():v; k.notified=false; }
+  }
+  const old=(S.weeks[wk.key]||{}).goals||{};
+  const goals={}; AREAS.forEach(a=>{ goals[a.id]=wk.goals[a.id].filter(Boolean).map(t=>({t, d:!!(old[a.id]||[]).find(o=>o.t===t&&o.d)})); });
+  S.weeks[wk.key]={planned:true, goals, at:Date.now()};
+  for(const d of wk.days){
+    if(S.tasks.some(x=>x.date===d && x.batch)) continue;
+    S.tasks.push({id:uid(), title:'🎥 Gravar conteúdo', area:'pessoal', tag:'redes', date:d, time:wk.time, remind:true, lead:10, repeat:'none', star:false, done:false, batch:true, notes:'Veja a fila na aba Conteúdo.', subtasks:[], createdAt:Date.now()}); made++;
+  }
+  save(); dlg.close(); render();
+  toast('Semana planejada ✓', [moved?moved+' tarefa(s) organizada(s)':'', made?made+' dia(s) de gravação':'' ].filter(Boolean).join(' · ')||'Boa semana!', null, 3500);
+  celebrate();
+}
+
 function openSettings(){
   dlgForm.dataset.kind='settings'; const s=S.settings;
   dlgForm.innerHTML=`<div class="modal-h"><h2>Configurações</h2><button type="button" class="icon-btn" data-dlg="close" aria-label="Fechar">✕</button></div>
@@ -833,6 +964,9 @@ function openSettings(){
   <div class="field"><label for="s-evening">🌙 Lembrete para revisar o dia</label><input id="s-evening" type="time" value="${s.evening}"></div></div>
   <div class="field"><span class="lbl">Como anotar rápido</span>
     <div class="sub">Escreva como um bilhete. O app entende o dia, a hora e o espaço:<br>• consulta Ana amanhã 14h<br>• proposta cliente sexta 10h #mac3dos<br>• treino todo dia 7h<br>• termine com ! para virar prioridade</div></div>
+  <label class="toggle"><span>🧘 Tela limpa<br><small class="sub">Esconde explicações e avisos. A tela Hoje mostra só o próximo compromisso e as 3 prioridades.</small></span><input type="checkbox" id="s-clean" ${s.clean?'checked':''}></label>
+  <div class="grid2"><div class="field"><label for="s-wday">🗓️ Planejar a semana em</label><select id="s-wday">${DAYS_SHORT.map((n,i)=>`<option value="${i}" ${+s.weekDay===i?'selected':''}>${['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][i]}</option>`).join('')}</select></div>
+  <div class="field"><label for="s-wtime">às</label><input id="s-wtime" type="time" value="${s.weekTime}"></div></div>
   <div class="field"><label for="s-theme">Aparência</label><select id="s-theme"><option value="">Igual ao celular</option><option value="light" ${s.theme==='light'?'selected':''}>Clara</option><option value="dark" ${s.theme==='dark'?'selected':''}>Escura</option></select></div>
   <div class="field"><span class="lbl">Lembretes</span><div class="row-btns" style="justify-content:flex-start"><button type="button" class="btn small ghost" data-dlg="testNotif">🔔 Testar lembrete</button></div></div>
   <div class="field"><span class="lbl">Backup (seus dados ficam só neste aparelho)</span>
@@ -842,7 +976,7 @@ function openSettings(){
   document.getElementById('f-import').addEventListener('change',importBackup);
   dlg.showModal();
 }
-function saveSettings(){ const g=id=>document.getElementById(id); Object.assign(S.settings,{name:g('s-name').value.trim(), morning:g('s-morning').value, evening:g('s-evening').value, theme:g('s-theme').value}); applyTheme(); save(); render(); }
+function saveSettings(){ const g=id=>document.getElementById(id); Object.assign(S.settings,{name:g('s-name').value.trim(), morning:g('s-morning').value, evening:g('s-evening').value, theme:g('s-theme').value, clean:g('s-clean').checked, weekDay:+g('s-wday').value, weekTime:g('s-wtime').value}); applyTheme(); save(); render(); }
 function applyTheme(){ const t=S.settings.theme; if(t) document.documentElement.setAttribute('data-theme',t); else document.documentElement.removeAttribute('data-theme'); }
 
 /* ================== Backup & agenda ================== */
@@ -931,6 +1065,10 @@ function checkReminders(){
     const pend=S.tasks.filter(x=>x.date===t&&!x.done).length, done=S.tasks.filter(x=>x.date===t&&x.done).length;
     notify('🌙 Revisão do dia', `${done} feita(s), ${pend} pendente(s). Que tal passar as pendentes para amanhã e anotar o que ficou na cabeça?`, 'evening', [{l:'Passar para amanhã', f:moveTodayToTomorrow}], true);
   }
+  if(now.getDay()===+S.settings.weekDay && S.settings.weekTime && hm>=S.settings.weekTime && S.settings.lastWeekNotif!==t && !weekPlanned()){
+    S.settings.lastWeekNotif=t; changed=true;
+    notify('🗓️ Hora de planejar a semana', '3 passos, uns 10 minutos. Começar a semana organizada faz toda a diferença.', 'week', [{l:'Planejar agora', f:openWeek}], true);
+  }
   if(changed){ save(); if(view==='hoje') render(); }
 }
 function snooze(id,min){ const k=S.tasks.find(x=>x.id===id); if(!k) return; const d=new Date(Date.now()+min*60000); k.date=ymd(d); k.time=pad(d.getHours())+':'+pad(d.getMinutes()); k.lead=0; k.remind=true; k.notified=false; save(); render(); toast('Adiado ⏰','Te lembro às '+k.time); }
@@ -969,6 +1107,9 @@ document.addEventListener('click',e=>{
     case 'clearDone': S.tasks=S.tasks.filter(k=>!k.done||!inSpace(k)); save(); render(); break;
     case 'goto': go(b.dataset.view); break;
     case 'settings': openSettings(); break;
+    case 'planWeek': openWeek(); break;
+    case 'toggleRest': showRest=!showRest; render(); break;
+    case 'goal': { const g=(S.weeks[weekKey(today())]||{}).goals||{}; const x=(g[b.dataset.area]||[])[+b.dataset.i]; if(x){ x.d=!x.d; if(x.d) celebrate(); save(); render(); } break; }
     case 'askNotif': askNotif(); break;
     case 'exportIcs': { const list=S.tasks.filter(k=>!k.done&&k.date&&k.date>=today()); if(!list.length){ toast('Nada para exportar','Adicione tarefas com dia.'); break; } downloadIcs(list,'minhas-tarefas.ics'); break; }
     case 'habit': { const h=S.habits.find(x=>x.id===id); const t=today(); if(h.log[t]) delete h.log[t]; else { h.log[t]=true; celebrate(); } save(); render(); break; }

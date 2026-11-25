@@ -1,0 +1,35 @@
+# Publica o app "Minha Vida em Ordem" (pasta organizador/) no GitHub Pages.
+# Depois de ativar (Settings > Pages > Source: GitHub Actions), o app fica em:
+#   https://macedorael.github.io/Projeto-Nutri/
+# Cada mudança na pasta organizador/ que chegar na main é publicada sozinha.
+name: Publicar organizador
+
+on:
+  push:
+    branches: [main]
+    paths: ["organizador/**", ".github/workflows/organizador-pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: organizador
+      - id: deploy
+        uses: actions/deploy-pages@v4

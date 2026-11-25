@@ -17,7 +17,7 @@ Funciona no celular e no computador, instala como aplicativo e funciona até sem
 |---|---|
 | ☀️ **Hoje** | Só o que importa hoje: progresso do dia, **Foco do dia (máx. 3 prioridades)**, tarefas atrasadas (com botão "passar para hoje"), rotina e o que ficou sem data. |
 | ✅ **Tarefas** | Todas as tarefas do espaço escolhido. No Pessoal, filtre por Estudos, Academia, Redes ou Casa. |
-| 📅 **Agenda** | Próximas 2 semanas e posts programados. Exporta tudo para a agenda do celular. |
+| 📅 **Agenda** | Próximas 2 semanas e posts programados. Exporta tudo para a agenda do celular. Tem o botão **🗓️ Planejar a semana**. |
 | 🔁 **Rotina** | Hábitos diários (água, treino, estudar, story…) com sequência de dias 🔥. |
 | 🎬 **Conteúdo** | Quadro das redes: Ideia → Roteiro → Gravado → Editado → Postado. |
 | 🎯 **Foco** | Pomodoro (25 min de foco, 5 de pausa) com **uma tarefa só** na tela. |
@@ -36,6 +36,16 @@ Escreva no campo do topo como se fosse um bilhete. O app entende:
 O espaço é descoberto assim: se você escrever `#consultorio`, `#mac3dos`, `#pessoal`, `#estudos`, `#academia` ou `#redes`, vale o que escreveu.
 Senão, se estiver dentro de um espaço, a tarefa vai para ele. Senão, o app adivinha pelas palavras (paciente, cliente, treino, aula, reels…).
 
+### Planejar a semana (10 minutos)
+No dia escolhido (domingo, por padrão, às 19h) o app lembra você e abre um passo a passo:
+1. **O que ficou para trás:** escolha o destino de cada tarefa atrasada ou sem data.
+2. **Prioridades da semana:** até 3 por espaço. Elas aparecem na tela Hoje, com bolinha para marcar.
+3. **Quando gravar conteúdo:** escolha os dias e o horário, e o app cria as tarefas com lembrete.
+
+### Tela limpa
+Em ⚙️ → **Tela limpa**, o app esconde explicações e avisos. A tela Hoje mostra só o próximo
+compromisso, as atrasadas (num botão), as 3 prioridades e as metas da semana. O resto fica num botão "Ver".
+
 ### Lembretes
 - Na hora de cada tarefa: notificação + som + vibração, com botões **Feito**, **Adiar 10 min**, **Adiar 1 h** e **Focar**.
 - ☀️ De manhã: lembrete para planejar o dia. 🌙 À noite: revisão do dia (passa o que ficou para amanhã).
@@ -49,15 +59,23 @@ Ficam salvos **só no seu aparelho** (nada vai para a internet). Em ⚙️ dá p
 
 ## Como colocar no celular
 
-O app precisa estar num endereço https. O jeito mais fácil e grátis:
+O app é publicado de graça pelo **GitHub Pages**, no endereço
+**https://macedorael.github.io/Projeto-Nutri/**
 
-1. Acesse **https://app.netlify.com/drop** no computador.
-2. Arraste a pasta `organizador` para a página. Você recebe um link.
-3. Abra o link no celular:
-   - **Android (Chrome):** menu ⋮ → **Instalar app** / **Adicionar à tela inicial**.
-   - **iPhone (Safari):** botão Compartilhar → **Adicionar à Tela de Início**. No iPhone,
-     as notificações só funcionam com o app instalado assim (iOS 16.4 ou mais novo).
-4. Abra o app e toque em **Ativar** no aviso de lembretes.
+### Ativar a publicação (só uma vez)
+1. No GitHub, abra o repositório **Projeto-Nutri** → **Settings** → **Pages**.
+2. Em **Build and deployment → Source**, escolha **GitHub Actions**.
+3. Junte este ramo na `main` (botão **Merge** do pull request). A partir daí, cada mudança no
+   app é publicada sozinha em 1 ou 2 minutos (veja na aba **Actions**).
+
+### Instalar no iPhone
+1. Abra **https://macedorael.github.io/Projeto-Nutri/** no **Safari** (tem que ser o Safari).
+2. Toque em **Compartilhar** (quadrado com seta) → **Adicionar à Tela de Início** → **Adicionar**.
+3. Abra o app **pelo ícone** na tela de início (não pelo Safari) e toque em **Ativar** no aviso de lembretes.
+   As notificações só funcionam no app instalado assim (iOS 16.4 ou mais novo).
+
+O app instalado guarda os dados separados do Safari. Use sempre o ícone da tela de início.
+Para passar o que você já anotou no link de teste, use ⚙️ → **Baixar backup** lá e **Restaurar backup** aqui.
 
 Para testar no computador: abra um terminal nesta pasta, rode `python -m http.server 8000` e acesse `http://localhost:8000`.
 
