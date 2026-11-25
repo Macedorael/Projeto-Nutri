@@ -2,7 +2,7 @@
 
 App para organizar tudo num lugar só, separado em **3 espaços**:
 
-- 👩‍⚕️ **Consultório**: pacientes, consultas, retornos
+- 👩🏻‍⚕️ **Consultório**: pacientes, consultas, retornos
 - **Mac3dos** (com o símbolo da marca): clientes, propostas, reuniões
 - 🤍 **Pessoal**: com etiquetas 📚 Estudos, 💪 Academia, 📱 Redes e 🏠 Casa & vida
 
