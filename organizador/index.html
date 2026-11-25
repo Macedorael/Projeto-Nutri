@@ -11,7 +11,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: uma coluna estreita (como um caderno), barra de navegação fixa embaixo, botão + sempre à mão */
 :root{
@@ -19,8 +19,8 @@
   --fg:#1d2321; --muted:#626b67; --accent:#0f766e; --accent-fg:#ffffff; --accent-soft:#d5ece8;
   --warn:#b45309; --warn-soft:#fdebd3; --danger:#b42318; --ok:#15803d;
   --a-consultorio:#1d8348; --a-mac3dos:#6d4bd1; --a-pessoal:#c2417f; --a-todas:#0f766e; --on-area:#ffffff;
-  --font-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --font-body:"Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display:"Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-body:"Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
   --radius:14px;
   color-scheme:light;
 }
@@ -61,10 +61,10 @@ section.block{margin-top:22px; display:flex; flex-direction:column; gap:10px}
 .count{font-family:var(--font-body); font-size:.8rem; font-weight:700; color:var(--muted); background:var(--surface-2); border-radius:999px; padding:1px 8px}
 
 /* Seletor de espaços */
-.spacebar{position:sticky; top:env(safe-area-inset-top,0px); z-index:15; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; padding-block:10px 8px; background:var(--bg)}
-.sp{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 2px 8px; border-radius:14px; border:2px solid var(--line); background:var(--surface); font-weight:800; font-size:.78rem; min-width:0; color:var(--fg)}
+.spacebar{position:sticky; top:env(safe-area-inset-top,0px); z-index:15; display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(4px,1.4vw,8px); padding-block:10px 8px; background:var(--bg)}
+.sp{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 1px 8px; border-radius:14px; border:2px solid var(--line); background:var(--surface); font-weight:800; font-size:.78rem; min-width:0; color:var(--fg)}
 .sp-e{font-size:1.45rem; line-height:1}
-.sp-n{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%}
+.sp-n{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; font-size:clamp(.64rem,2.9vw,.8rem); font-weight:600; letter-spacing:-.03em}
 .sp-c{position:absolute; top:-7px; right:-3px; min-width:22px; height:22px; border-radius:11px; background:var(--area); color:var(--on-area); font-size:.72rem; display:grid; place-items:center; padding:0 6px; font-variant-numeric:tabular-nums}
 .sp[aria-pressed="true"]{background:var(--area); border-color:var(--area); color:var(--on-area)}
 .sp[aria-pressed="true"] .sp-c{background:var(--surface); color:var(--fg); box-shadow:0 0 0 2px var(--area)}
@@ -78,7 +78,7 @@ h1 .h-space{color:var(--accent)}
 .capture input:focus{border-color:var(--accent); outline:none}
 .capture button{background:var(--accent); color:var(--accent-fg); border:0; border-radius:var(--radius); padding:0 18px; font-weight:700}
 .hint{font-size:.8rem; color:var(--muted)}
-.hint code{background:var(--surface-2); border-radius:5px; padding:0 4px; font-size:.78rem}
+.hint code{background:var(--surface-2); border-radius:5px; padding:0 5px; font-family:inherit; font-size:.8rem; font-weight:500; white-space:nowrap}
 
 /* Progresso */
 .progress{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; display:flex; flex-direction:column; gap:8px}
@@ -447,7 +447,7 @@ function headerHTML(title, sub){
     <button class="icon-btn" data-act="settings" aria-label="Configurações e backup">⚙️</button></header>${view==='conteudo'?'':spaceBarHTML()}`;
 }
 function captureHTML(ph){
-  return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que você precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>
+  return `<form class="capture" data-form="capture"><input id="cap-${view}" name="q" autocomplete="off" enterkeyhint="done" placeholder="${ph||(space==='todas'?'O que precisa lembrar?':'Anotar em '+AREA[space].nome+'…')}" aria-label="Anotar tarefa"><button>Anotar</button></form>
   ${view!=='hoje'?'':`<div class="hint">Escreva do seu jeito: <code>consulta Ana amanhã 14h</code> · <code>proposta cliente sexta 10h #mac3dos</code> · <code>treino todo dia 7h</code> · termine com <code>!</code> para prioridade</div>`}`;
 }
 function notifBanner(){
