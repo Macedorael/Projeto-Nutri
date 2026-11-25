@@ -330,6 +330,11 @@ body{background-image:var(--pattern); background-size:var(--pattern-size); backg
 .plan-banner{display:flex; align-items:center; gap:12px; background:var(--surface); border-radius:16px; padding:14px 16px}
 .plan-banner p{margin:0; flex:1; min-width:0}
 .plan-banner p b{display:block}
+/* X para fechar os avisos */
+#toasts .toast{position:relative; padding-right:48px}
+.toast-x{position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%; border:0; display:grid; place-items:center; padding:0;
+  background:var(--fill); color:var(--muted); font-size:14px; font-weight:700; line-height:1; cursor:pointer}
+.toast-x:active{transform:scale(.92)}
 </style>
 </head>
 <body>
@@ -1083,7 +1088,8 @@ function toast(title, body, actions, ms=3000){
   const acts=el.querySelector('.acts');
   (actions||[]).forEach(a=>{ const b=document.createElement('button'); b.textContent=a.l; b.onclick=()=>{ el.remove(); a.f(); }; acts.appendChild(b); });
   if(ms){ if(!acts.children.length) acts.remove(); snack.replaceChildren(el); setTimeout(()=>el.remove(), ms); return; }
-  const x=document.createElement('button'); x.textContent='Fechar'; x.onclick=()=>el.remove(); acts.appendChild(x);
+  const x=document.createElement('button'); x.className='toast-x'; x.type='button'; x.textContent='✕'; x.setAttribute('aria-label','Fechar aviso'); x.onclick=()=>el.remove(); el.appendChild(x);
+  if(!acts.children.length) acts.remove();
   toasts.prepend(el); while(toasts.children.length>3) toasts.lastChild.remove();
 }
 const CHEERS=['Mandou bem! 💚','Uma a menos! ✨','Isso aí! 🙌','Arrasou! 🔥','Riscado! ✅'];
