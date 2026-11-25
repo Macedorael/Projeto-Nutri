@@ -69,6 +69,9 @@ section.block{margin-top:22px; display:flex; flex-direction:column; gap:10px}
 .sp[aria-pressed="true"]{background:var(--area); border-color:var(--area); color:var(--on-area)}
 .sp[aria-pressed="true"] .sp-c{background:var(--surface); color:var(--fg); box-shadow:0 0 0 2px var(--area)}
 h1 .h-space{color:var(--accent)}
+.logo{height:1.2em; width:auto; vertical-align:-.2em; flex:none}
+.sp-e .logo{height:1.6rem; margin-block:-.08rem}
+.sp[aria-pressed="true"] .sp-e .logo{background:#fff; border-radius:8px; padding:3px 5px; height:1.6rem; margin-block:-.08rem}
 .space-h{width:100%; display:flex; align-items:center; gap:10px; border:0; border-left:6px solid var(--area); border-radius:12px; padding:12px 14px; background:color-mix(in srgb,var(--area) 14%,var(--surface)); color:var(--fg); font-family:var(--font-display); font-size:1.1rem; font-weight:700; text-align:left}
 .space-h .go{margin-left:auto; font-family:var(--font-body); font-size:.82rem; color:var(--muted)}
 
@@ -232,10 +235,14 @@ dialog::backdrop{background:rgb(10 15 13 / .55)}
 // Os 3 espaços da vida. O campo "area" de cada tarefa guarda um destes ids.
 const AREAS = [
   {id:'consultorio', nome:'Consultório', emoji:'👩‍⚕️', palavras:['paciente','pacientes','consulta','dieta','plano alimentar','retorno','anamnese','cardapio','bioimpedancia','avaliacao','prescricao','atendimento','consultorio','nutri','agenda de pacientes']},
-  {id:'mac3dos',     nome:'Mac3dos',     emoji:'💼', palavras:['mac3dos','macedos','cliente','clientes','reuniao','proposta','orcamento','nota fiscal','contrato','fornecedor']},
+  {id:'mac3dos',     nome:'Mac3dos',     emoji:'', logo:true, palavras:['mac3dos','macedos','cliente','clientes','reuniao','proposta','orcamento','nota fiscal','contrato','fornecedor']},
   {id:'pessoal',     nome:'Pessoal',     emoji:'💜', palavras:[]},
 ];
 const AREA = Object.fromEntries(AREAS.map(a=>[a.id,a]));
+// Símbolo da Mac3dos (redesenhado em vetor a partir do logo)
+const MAC3DOS_LOGO='<svg class="logo" viewBox="0 0 57 82" aria-hidden="true"><path d="M0 0L29 29L0 54Z" fill="#D8D6D9"/><path d="M57 0L29 29L0 54H57Z" fill="#A027FE"/><path d="M0 54H57L28.5 82Z" fill="#420A4F"/></svg>';
+function ico(a){ return a.logo ? MAC3DOS_LOGO : `<span class="emo">${a.emoji}</span>`; }
+function lbl(a){ return (a.emoji?a.emoji+' ':'')+a.nome; }
 // Etiquetas dentro do Pessoal
 const TAGS = [
   {id:'estudos',  nome:'Estudos',  emoji:'📚', palavras:['estudar','estudo','aula','curso','prova','artigo','ler','livro','pos','tcc','revisar','resumo']},
@@ -369,7 +376,7 @@ function addFromText(raw){
   if(area==='pessoal' && !tag && view==='tarefas' && tagFilter!=='todas') tag=tagFilter;
   const task={id:uid(), title:p.title||raw.trim(), area, tag:area==='pessoal'?tag:'', date:p.date, time:p.time, remind:p.remind, lead:0, repeat:p.repeat, star:p.star, done:false, notes:'', subtasks:[], createdAt:Date.now()};
   S.tasks.push(task); save();
-  const bits=[AREA[task.area].emoji+' '+AREA[task.area].nome+(task.tag?' › '+TAG[task.tag].nome:'')]; if(task.date) bits.push(dayLabel(task.date)); if(task.time) bits.push(task.time+' com lembrete'); if(task.repeat!=='none') bits.push(REPEAT_LABEL[task.repeat]);
+  const bits=[lbl(AREA[task.area])+(task.tag?' › '+TAG[task.tag].nome:'')]; if(task.date) bits.push(dayLabel(task.date)); if(task.time) bits.push(task.time+' com lembrete'); if(task.repeat!=='none') bits.push(REPEAT_LABEL[task.repeat]);
   toast('Anotado ✓', task.title+' · '+bits.join(' · '), [{l:'Editar', f:()=>openTask(task.id)}], 3500);
   render();
 }
@@ -405,7 +412,7 @@ function taskHTML(t, opts={}){
   const a=AREA[t.area]||AREA.pessoal; const late=!t.done && !opts.repDone && t.date && t.date<today();
   const subs=t.subtasks||[]; const subDone=subs.filter(s=>s.d).length;
   const meta=[];
-  if(opts.showArea ?? space==='todas') meta.push(`<span class="chip area">${a.emoji} ${esc(a.nome)}</span>`);
+  if(opts.showArea ?? space==='todas') meta.push(`<span class="chip area">${ico(a)} ${esc(a.nome)}</span>`);
   if(t.tag && TAG[t.tag]) meta.push(`<span class="chip">${TAG[t.tag].emoji} ${esc(TAG[t.tag].nome)}</span>`);
   if(t.star) meta.push('<span class="chip star">⭐ Prioridade</span>');
   if(late) meta.push(`<span class="chip late">⚠️ Atrasada · ${esc(dayLabel(t.date))}</span>`);
@@ -439,11 +446,11 @@ function spaceBarHTML(){
   const cnt=id=>S.tasks.filter(x=>!x.done && x.date && x.date<=t && (id==='todas'||x.area===id)).length;
   const opts=[{id:'todas',nome:'Tudo',emoji:'🌎'},...AREAS];
   return `<div class="spacebar" role="group" aria-label="Escolher espaço">${opts.map(o=>{ const c=cnt(o.id);
-    return `<button class="sp" style="--area:var(--a-${o.id})" data-act="space" data-space="${o.id}" aria-pressed="${space===o.id}" aria-label="${o.nome}: ${c} para hoje"><span class="sp-e">${o.emoji}</span><span class="sp-n">${o.nome}</span>${c?`<span class="sp-c">${c}</span>`:''}</button>`; }).join('')}</div>`;
+    return `<button class="sp" style="--area:var(--a-${o.id})" data-act="space" data-space="${o.id}" aria-pressed="${space===o.id}" aria-label="${o.nome}: ${c} para hoje"><span class="sp-e">${ico(o)}</span><span class="sp-n">${o.nome}</span>${c?`<span class="sp-c">${c}</span>`:''}</button>`; }).join('')}</div>`;
 }
 function headerHTML(title, sub){
   const sp=space!=='todas'?AREA[space]:null;
-  return `<header class="top"><div><h1>${sp&&view!=='conteudo'?`<span class="h-space">${sp.emoji} ${sp.nome}</span> · `:''}${title}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div>
+  return `<header class="top"><div><h1>${sp&&view!=='conteudo'?`<span class="h-space">${ico(sp)} ${sp.nome}</span> · `:''}${title}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div>
     <button class="icon-btn" data-act="settings" aria-label="Configurações e backup">⚙️</button></header>${view==='conteudo'?'':spaceBarHTML()}`;
 }
 function captureHTML(ph){
@@ -474,7 +481,7 @@ function viewHoje(){
   let rest;
   if(space==='todas'){
     rest=AREAS.map(a=>{ const list=others.filter(x=>x.area===a.id);
-      return `<section class="block" style="--area:var(--a-${a.id})"><button class="space-h" data-act="space" data-space="${a.id}">${a.emoji} ${a.nome} <span class="count">${list.length}</span><span class="go">Abrir →</span></button>
+      return `<section class="block" style="--area:var(--a-${a.id})"><button class="space-h" data-act="space" data-space="${a.id}">${ico(a)} ${a.nome} <span class="count">${list.length}</span><span class="go">Abrir →</span></button>
         ${listHTML(list,{showDate:false,showArea:false}, 'Nada mais para hoje aqui ✓')}</section>`; }).join('');
   } else {
     rest=`<section class="block"><h2>📋 Resto do dia <span class="count">${others.length}</span></h2>
@@ -551,7 +558,7 @@ function viewRotina(){
     const dots=[...Array(7)].map((_,i)=>{const d=addDays(t,i-6); return `<span class="dot ${h.log[d]?'on':''}" title="${dayLabel(d)}"></span>`}).join('');
     return `<div class="habit" style="--area:var(--a-${h.area})">
       <button class="hcheck ${on?'on':''}" data-act="habit" data-id="${h.id}" aria-pressed="${on}" aria-label="Marcar ${esc(h.name)} hoje">${h.emoji}</button>
-      <div class="h-name"><b>${esc(h.name)}</b><small>${space==='todas'?AREA[h.area].emoji+' '+AREA[h.area].nome+' · ':''}${st?`🔥 ${st} dia${st>1?'s':''} seguido${st>1?'s':''}`:'Comece hoje'}</small><div class="dots" aria-label="Últimos 7 dias">${dots}</div></div>
+      <div class="h-name"><b>${esc(h.name)}</b><small>${space==='todas'?ico(AREA[h.area])+' '+AREA[h.area].nome+' · ':''}${st?`🔥 ${st} dia${st>1?'s':''} seguido${st>1?'s':''}`:'Comece hoje'}</small><div class="dots" aria-label="Últimos 7 dias">${dots}</div></div>
       <button class="mini" data-act="delHabit" data-id="${h.id}" aria-label="Remover hábito ${esc(h.name)}">✕</button></div>`;
   }).join('');
   const doneN=habits.filter(h=>h.log[t]).length;
@@ -560,7 +567,7 @@ function viewRotina(){
     <section class="block">${items||'<div class="empty">Nenhum hábito aqui ainda.</div>'}</section>
     <section class="block"><h2>Novo hábito</h2>
       <form class="capture" data-form="habit"><input id="habit-emoji" name="emoji" maxlength="4" value="✨" style="flex:0 0 64px; text-align:center" aria-label="Emoji"><input id="habit-name" name="name" placeholder="Ex.: Tomar creatina" aria-label="Nome do hábito" autocomplete="off">
-      <select id="habit-area" name="area" aria-label="Espaço" style="flex:0 0 auto; background:var(--surface); border:2px solid var(--line); border-radius:var(--radius); padding:0 8px">${AREAS.map(a=>`<option value="${a.id}" ${a.id===def?'selected':''}>${a.emoji}</option>`).join('')}</select><button>+</button></form>
+      <select id="habit-area" name="area" aria-label="Espaço" style="flex:0 0 auto; background:var(--surface); border:2px solid var(--line); border-radius:var(--radius); padding:0 8px">${AREAS.map(a=>`<option value="${a.id}" ${a.id===def?'selected':''}>${lbl(a)}</option>`).join('')}</select><button>+</button></form>
     </section>`;
 }
 
@@ -594,7 +601,7 @@ function viewFoco(){
   <section class="block"><div class="focus">
     <div class="mode-tabs" role="group" aria-label="Tipo de sessão">${Object.entries({foco:'Foco 25',pausa:'Pausa 5',longa:'Pausa 15'}).map(([k,l])=>`<button data-act="mode" data-mode="${k}" aria-pressed="${f.mode===k}">${l}</button>`).join('')}</div>
     <div class="timer" id="timer">${fmt(focusRemaining())}</div>
-    ${f.mode==='foco'?(task?`<div class="focus-task">${AREA[task.area].emoji} ${esc(task.title)}</div>`:`<div class="sub">Escolha abaixo a tarefa que vai fazer agora</div>`):`<div class="focus-task">Levanta, bebe água, alonga 💧</div>`}
+    ${f.mode==='foco'?(task?`<div class="focus-task">${ico(AREA[task.area])} ${esc(task.title)}</div>`:`<div class="sub">Escolha abaixo a tarefa que vai fazer agora</div>`):`<div class="focus-task">Levanta, bebe água, alonga 💧</div>`}
     <div class="row-btns">
       <button class="btn" data-act="timer">${f.endsAt?'⏸ Pausar':'▶️ Começar'}</button>
       <button class="btn ghost" data-act="timerReset">Reiniciar</button>
@@ -603,7 +610,7 @@ function viewFoco(){
     <div class="hint">Celular longe, uma aba só. Se lembrar de outra coisa, anote no + e volte.</div>
   </div></section>
   <section class="block"><h2>O que fazer agora?</h2>
-    ${pend.length?`<ul class="list">${pend.slice(0,12).map(t=>`<li class="task" style="--area:var(--a-${t.area})"><button class="t-body" data-act="focusOn" data-id="${t.id}"><span class="t-title">${f.taskId===t.id?'🎯 ':''}${esc(t.title)}</span><span class="meta"><span class="chip area">${AREA[t.area].emoji} ${AREA[t.area].nome}</span>${t.star?'<span class="chip star">⭐</span>':''}</span></button></li>`).join('')}</ul>`:'<div class="empty">Nada pendente para hoje. Aproveita! 🌿</div>'}
+    ${pend.length?`<ul class="list">${pend.slice(0,12).map(t=>`<li class="task" style="--area:var(--a-${t.area})"><button class="t-body" data-act="focusOn" data-id="${t.id}"><span class="t-title">${f.taskId===t.id?'🎯 ':''}${esc(t.title)}</span><span class="meta"><span class="chip area">${ico(AREA[t.area])} ${AREA[t.area].nome}</span>${t.star?'<span class="chip star">⭐</span>':''}</span></button></li>`).join('')}</ul>`:'<div class="empty">Nada pendente para hoje. Aproveita! 🌿</div>'}
   </section>`;
 }
 function startTick(){
@@ -647,7 +654,7 @@ function drawTaskForm(){
   dlgForm.innerHTML=`<div class="modal-h"><h2>${t.id?'Editar tarefa':'Nova tarefa'}</h2><button type="button" class="icon-btn" data-dlg="close" aria-label="Fechar">✕</button></div>
   <div class="field"><label for="f-title">O que fazer</label><input id="f-title" value="${esc(t.title)}" required></div>
   <div class="grid2">
-    <div class="field"><label for="f-area">Onde</label><select id="f-area">${AREAS.map(a=>`<option value="${a.id}" ${a.id===t.area?'selected':''}>${a.emoji} ${a.nome}</option>`).join('')}</select></div>
+    <div class="field"><label for="f-area">Onde</label><select id="f-area">${AREAS.map(a=>`<option value="${a.id}" ${a.id===t.area?'selected':''}>${lbl(a)}</option>`).join('')}</select></div>
     ${t.area==='pessoal'?`<div class="field"><label for="f-tag">Tipo</label><select id="f-tag"><option value="">— nenhum —</option>${TAGS.map(g=>`<option value="${g.id}" ${g.id===t.tag?'selected':''}>${g.emoji} ${g.nome}</option>`).join('')}</select></div>`:''}
     <div class="field"><label for="f-repeat">Repetir</label><select id="f-repeat">${Object.entries(REPEAT_LABEL).map(([k,l])=>`<option value="${k}" ${k===t.repeat?'selected':''}>${l}</option>`).join('')}</select></div>
     <div class="field"><label for="f-date">Dia</label><input id="f-date" type="date" value="${t.date||''}"></div>
@@ -752,7 +759,7 @@ function buildIcs(tasks){
   for(const t of tasks){ if(!t.date) continue; const a=AREA[t.area]||AREA.pessoal;
     lines.push('BEGIN:VEVENT','UID:'+(t.id||uid())+'@vidaemordem','DTSTAMP:'+stamp,
       (t.time?'DTSTART:':'DTSTART;VALUE=DATE:')+icsDate(t), (t.time?'DTEND:':'DTEND;VALUE=DATE:')+icsEnd(t),
-      'SUMMARY:'+icsText(a.emoji+' '+t.title), 'DESCRIPTION:'+icsText(a.nome+(t.notes?'\n'+t.notes:'')));
+      'SUMMARY:'+icsText((a.emoji?a.emoji+' ':'')+t.title), 'DESCRIPTION:'+icsText(a.nome+(t.notes?'\n'+t.notes:'')));
     if(t.repeat&&RR[t.repeat]) lines.push('RRULE:'+RR[t.repeat]);
     if(t.time&&t.remind!==false) lines.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsText(t.title),'TRIGGER:-PT'+(t.lead||0)+'M','END:VALARM');
     lines.push('END:VEVENT'); }
@@ -761,7 +768,7 @@ function buildIcs(tasks){
 function downloadIcs(tasks,name){ download(name, buildIcs(tasks), 'text/calendar'); toast('Arquivo de agenda criado','Abra o arquivo baixado para adicionar à sua agenda.'); }
 function gcalLink(t){
   const a=AREA[t.area]||AREA.pessoal; const dates=icsDate(t)+'/'+icsEnd(t);
-  const p=new URLSearchParams({action:'TEMPLATE', text:a.emoji+' '+t.title, dates, details:a.nome+(t.notes?'\n'+t.notes:'')});
+  const p=new URLSearchParams({action:'TEMPLATE', text:(a.emoji?a.emoji+' ':'')+t.title, dates, details:a.nome+(t.notes?'\n'+t.notes:'')});
   const RR={daily:'RRULE:FREQ=DAILY', weekdays:'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR', weekly:'RRULE:FREQ=WEEKLY', monthly:'RRULE:FREQ=MONTHLY'};
   if(RR[t.repeat]) p.set('recur',RR[t.repeat]);
   return 'https://calendar.google.com/calendar/render?'+p.toString();
@@ -799,7 +806,7 @@ function checkReminders(){
       k.notified=true; changed=true;
       if(now-due > 6*3600*1000) continue; // muito antigo: não incomoda
       const a=AREA[k.area]||AREA.pessoal; const when=k.lead?LEAD_LABEL[k.lead].replace(' antes','')+' para: ':'Agora: ';
-      notify('🔔 '+a.emoji+' '+k.title, when+k.title+' ('+k.time+')', k.id, [
+      notify('🔔 '+(a.emoji?a.emoji+' ':'')+k.title, when+k.title+' ('+k.time+')', k.id, [
         {l:'✓ Feito', f:()=>toggleTask(k.id)},
         {l:'Adiar 10 min', f:()=>snooze(k.id,10)},
         {l:'Adiar 1 h', f:()=>snooze(k.id,60)},
